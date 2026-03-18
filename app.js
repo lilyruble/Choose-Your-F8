@@ -2,6 +2,10 @@ let scene, camera, renderer, ball;
 const input = document.getElementById('destiny-input');
 const fateOutput = document.getElementById('fate-output');
 const dareOutput = document.getElementById('dare-output');
+const API_BASE_URL =
+    window.location.hostname === 'localhost'
+        ? 'http://localhost:8080'
+        : 'https://REPLACE_WITH_YOUR_CLOUD_RUN_URL';
 
 function init() {
     scene = new THREE.Scene();
@@ -67,21 +71,25 @@ async function getFate(question) {
     MAX 40 WORDS TOTAL. Tone: Vibe-coded.`;
 
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+        const response = await fetch(`${API_BASE_URL}/fate`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                contents: [{ parts: [{ text: `${SYSTEM_PROMPT}\nUser Question: ${question}` }] }]
+                prompt: `${SYSTEM_PROMPT}\nUser Question: ${question}`
             })
         });
 
+        if (!response.ok) {
+            throw new Error(`Backend error: ${response.status}`);
+        }
+
         const data = await response.json();
-        const text = data.candidates[0].content.parts[0].text;
+        const text = data.text;
 
         const [fatePart, darePart] = text.split('[DARE]:');
 
         fateOutput.innerText = fatePart.replace('[FATE]:', '').trim();
-        dareOutput.innerText = `DARE: ${darePart.trim()}`;
+        dareOutput.innerText = darePart ? `DARE: ${darePart.trim()}` : 'DARE: Trust your instinct.';
 
         gsap.to([fateOutput, dareOutput], { opacity: 1, duration: 1, delay: 0.5 });
 
