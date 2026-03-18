@@ -5,7 +5,7 @@ const dareOutput = document.getElementById('dare-output');
 const API_BASE_URL =
     window.location.hostname === 'localhost'
         ? 'http://localhost:8080'
-        : 'https://REPLACE_WITH_YOUR_CLOUD_RUN_URL';
+        : 'https://lucky8-fate-api-588925072046.us-central1.run.app';
 
 function init() {
     scene = new THREE.Scene();
