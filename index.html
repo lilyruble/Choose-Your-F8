@@ -15,9 +15,24 @@
 </head>
 
 <body class="bg-black overflow-hidden flex items-center justify-center h-screen">
+    <div class="mystic-background"></div>
     <div class="noise"></div>
 
     <!-- <div id="canvas-container" class="absolute inset-0 cursor-crosshair"></div> -->
+
+    <div class="ritual-intro absolute top-8 left-0 w-full max-w-2xl px-6 z-30 text-left">
+        <p class="intro-title">The original 8-Ball predicted the future. This one helps you create it.</p>
+        <p class="intro-copy">We all have a "Big Scary Thing" we're avoiding. Whether it's in your career, romance, or
+            personal life, the Oracle does not just give you an answer - it gives you a Dare.</p>
+        <div class="rules-container">
+            <p class="rule rule-1">1. <strong>Ask "Should I...":</strong> Do not ask what will happen. Ask what you
+                should do.</p>
+            <p class="rule rule-2">2. <strong>Respect the Limit:</strong> You have 8 Divinations per day. Use them on
+                the desires that actually matter.</p>
+            <p class="rule rule-3">3. <strong>Choose Your Fate:</strong> The Oracle provides the spark; you provide the
+                fire. Trust your intuition and embrace the unknown.</p>
+        </div>
+    </div>
 
     <!-- The 8-Ball Window Display -->
     <div id="display-window"
@@ -32,9 +47,10 @@
         camera-orbit="0deg 75deg 2.5m"></model-viewer>
 
     <!-- UI Overlay -->
-    <div class="absolute bottom-12 w-full max-w-sm px-6 z-30">
-        <input id="destiny-input" type="text" placeholder="ASK YOUR DESTINY..."
-            class="w-full bg-transparent border-b border-white/20 py-2 text-center text-white focus:outline-none focus:border-cyan-500 transition-all placeholder:opacity-80 uppercase tracking-[0.3em] text-[10px]">
+    <div class="prompt-area absolute bottom-20 left-1/2 -translate-x-1/2 w-full max-w-xl px-6 z-30 text-center">
+        <input id="destiny-input" type="text" placeholder="Should I send that risky text?"
+            class="w-full bg-transparent border-b-2 border-white/30 py-3 text-center text-white focus:outline-none focus:border-cyan-500 transition-all placeholder:opacity-80 tracking-wide text-base">
+        <p class="choose-fate-copy mt-4">Choose Your Fate</p>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>

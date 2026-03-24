@@ -1,8 +1,31 @@
 body {
+    margin: 0;
+    padding: 0;
     font-family: "Press Start 2P", system-ui;
     font-weight: 400;
     font-style: normal;
-    background: radial-gradient(circle at center, #1a1a2e 0%, #0a0a0a 100%);
+    background-color: #121212;
+    transition: background 2s ease-in-out;
+    color: #fff;
+}
+
+:root {
+    --theme-glow-color: #121212;
+}
+
+.mystic-background {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    opacity: 0.6;
+    transition: background 2s ease-in-out;
+    background: radial-gradient(circle at center,
+            var(--theme-glow-color, #121212) 0%,
+            rgba(18, 18, 18, 0.9) 60%,
+            #121212 100%);
 }
 
 .noise {
@@ -31,4 +54,122 @@ body {
 #magic-8-ball {
     height: 60%;
     width: 100%;
+}
+
+.ritual-intro {
+    color: rgba(255, 255, 255, 0.88);
+    font-family: "IBM Plex Mono", monospace;
+    max-width: min(42vw, 44rem);
+}
+
+.intro-title {
+    font-size: clamp(1.8rem, 1.4vw, 1.55rem);
+    font-weight: bolder;
+    line-height: 1.45;
+    margin-bottom: 1rem;
+    color: #c9f8ff;
+    text-shadow: 0 0 8px rgba(34, 211, 238, 0.35);
+}
+
+.intro-copy {
+    font-size: clamp(0.95rem, 1.05vw, 1.15rem);
+    line-height: 1.55;
+    margin-bottom: 1.15rem;
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.choose-fate-copy {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: clamp(1.14rem, 1.26vw, 1.38rem);
+    line-height: 1.35;
+    color: rgba(255, 255, 255, 0.78);
+
+    text-shadow: 0 0 8px rgba(34, 211, 238, 0.22);
+}
+
+.rules-container {
+    max-width: 42rem;
+    margin: 0 auto;
+}
+
+.rule {
+    font-size: clamp(0.9rem, 1vw, 1.05rem);
+    line-height: 1.5;
+    margin-bottom: 0.72rem;
+    opacity: 0;
+    animation: reveal 0.8s ease-out forwards;
+}
+
+.rule-1 {
+    animation-delay: 0.5s;
+}
+
+.rule-2 {
+    animation-delay: 1.2s;
+}
+
+.rule-3 {
+    animation-delay: 2.5s;
+    color: #fff;
+    font-style: italic;
+}
+
+@keyframes reveal {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+        filter: blur(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .ritual-intro {
+        max-width: 100%;
+        width: 100%;
+        padding-right: 1rem;
+        top: 1rem;
+    }
+
+    .intro-title {
+        font-size: 0.78rem;
+        line-height: 1.35;
+        margin-bottom: 0.6rem;
+    }
+
+    .intro-copy {
+        font-size: 0.62rem;
+        line-height: 1.35;
+        margin-bottom: 0.65rem;
+    }
+
+    .rule {
+        font-size: 0.58rem;
+        line-height: 1.3;
+        margin-bottom: 0.45rem;
+    }
+
+    .prompt-area {
+        bottom: 4.2rem;
+        max-width: 92vw;
+    }
+
+    .choose-fate-copy {
+        font-size: 0.82rem;
+        margin-top: 0.65rem;
+    }
+
+    #display-window {
+        width: 170px;
+        height: 170px;
+    }
+
+    #magic-8-ball {
+        height: 55%;
+    }
 }

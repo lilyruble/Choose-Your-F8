@@ -5,6 +5,13 @@ const dareOutput = document.getElementById('dare-output');
 const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === ''
     ? 'http://localhost:8080'
     : 'https://lucky8-fate-api-588925072046.us-central1.run.app';;
+const placeholderPrompts = [
+    'Should I send that risky text?',
+    'Should I sign up for that marathon?',
+    'Should I start the business today?'
+];
+let placeholderIndex = 0;
+const FALLBACK_THEME_COLOR = '#FBC02D';
 
 function init() {
     scene = new THREE.Scene();
@@ -57,17 +64,93 @@ input.addEventListener('keypress', async (e) => {
     }
 });
 
+function startPlaceholderRotation() {
+    if (!input) return;
+
+    setInterval(() => {
+        if (document.activeElement === input || input.value.trim()) return;
+        placeholderIndex = (placeholderIndex + 1) % placeholderPrompts.length;
+        input.placeholder = placeholderPrompts[placeholderIndex];
+    }, 2800);
+}
+
+function applyMysticGlow(newColor) {
+    const root = document.documentElement;
+    root.style.setProperty('--theme-glow-color', newColor || FALLBACK_THEME_COLOR);
+}
+
+function inferThemeColorFromQuestion(question) {
+    const q = question.toLowerCase();
+    if (/(love|date|relationship|romance|partner|ex|crush)/.test(q)) return '#880E4F';
+    if (/(career|job|work|promotion|business|interview|salary|startup)/.test(q)) return '#1565C0';
+    if (/(personal|habit|confidence|fear|family|friend|boundary|no)/.test(q)) return '#2E7D32';
+    if (/(health|fitness|marathon|workout|sleep|diet|wellness|vitality)/.test(q)) return '#7B1FA2';
+    return FALLBACK_THEME_COLOR;
+}
+
+function parseFatePayload(data, question) {
+    if (data && typeof data === 'object' && data.fate && data.dare) {
+        return {
+            fate: String(data.fate).trim(),
+            dare: String(data.dare).trim(),
+            themeColor: data.themeColor || inferThemeColorFromQuestion(question)
+        };
+    }
+
+    const rawText = (data && data.text) ? String(data.text).trim() : '';
+
+    if (!rawText) {
+        return {
+            fate: 'Signals are unclear.',
+            dare: 'Take one brave step now.',
+            themeColor: inferThemeColorFromQuestion(question)
+        };
+    }
+
+    try {
+        const parsed = JSON.parse(rawText);
+        if (parsed && parsed.fate && parsed.dare) {
+            return {
+                fate: String(parsed.fate).trim(),
+                dare: String(parsed.dare).trim(),
+                themeColor: parsed.themeColor || inferThemeColorFromQuestion(question)
+            };
+        }
+    } catch (err) {
+        // Fallback to tagged text parsing.
+    }
+
+    const [fatePart, darePart] = rawText.split('[DARE]:');
+    const fate = fatePart.replace('[FATE]:', '').trim();
+    const dare = darePart ? darePart.trim() : 'Trust your instinct.';
+    return {
+        fate: fate || 'Signals are unclear.',
+        dare,
+        themeColor: inferThemeColorFromQuestion(question)
+    };
+}
+
 // function shakeBall() {
 //     gsap.to(ball.position, { x: 0.1, yoyo: true, repeat: 10, duration: 0.05 });
 //     gsap.to([fateOutput, dareOutput], { opacity: 0, duration: 0.3 });
 // }
 
 async function getFate(question) {
-    const SYSTEM_PROMPT = `You are "Lucky 8 Fate," a digital Oracle for risk-takers. Edgy, wise, action-oriented. 
-    1. If malicious/illegal: [FATE]: The path is dark. [DARE]: This is a mistake. Turn away.
-    2. Otherwise: [FATE]: 3-5 word cryptic fortune. [DARE]: One specific low-stakes micro-challenge.
-    3. 10% chance: Give a "Rejection Dare" (e.g. ask for a discount).
-    MAX 40 WORDS TOTAL. Tone: Vibe-coded.`;
+    const SYSTEM_PROMPT = `You are "Lucky 8 Fate," a digital Oracle for risk-takers.
+Return JSON only in this exact shape:
+{"category":"...","fate":"...","dare":"...","themeColor":"#RRGGBB"}
+
+Rules:
+1) If malicious/illegal: category="The Unknown", fate="The path is dark.", dare="This is a mistake. Turn away.", themeColor="#FBC02D".
+2) Category + fear focus + tone mapping:
+- Physical Vitality | Physical limits / starting routines | Grounding & Primal | themeColor="#7B1FA2"
+- Intellectual Curiosity | Imposter syndrome / learning | Crisp & Expanding | themeColor="#1565C0"
+- Radical Candor | Boundaries / saying 'No' | Sharp & Courageous | themeColor="#880E4F"
+- Digital Detox | FOMO / being offline | Zen & Minimalist | themeColor="#2E7D32"
+3) If question does not clearly fit a category: use category="The Unknown", make fate especially cryptic, and dare a random act of courage. themeColor="#FBC02D".
+4) If user asks passive "Will I..." question, gently reframe fate toward user agency.
+5) fate must be 3-8 words; dare must be one specific low-stakes micro-challenge.
+6) Keep total response concise and action-oriented.`;
 
     try {
         const response = await fetch(`${API_BASE_URL}/fate`, {
@@ -83,16 +166,15 @@ async function getFate(question) {
         }
 
         const data = await response.json();
-        const text = data.text;
-
-        const [fatePart, darePart] = text.split('[DARE]:');
-
-        fateOutput.innerText = fatePart.replace('[FATE]:', '').trim();
-        dareOutput.innerText = darePart ? `DARE: ${darePart.trim()}` : 'DARE: Trust your instinct.';
+        const payload = parseFatePayload(data, question);
+        applyMysticGlow(payload.themeColor);
+        fateOutput.innerText = payload.fate;
+        dareOutput.innerText = `DARE: ${payload.dare}`;
 
         gsap.to([fateOutput, dareOutput], { opacity: 1, duration: 1, delay: 0.5 });
 
     } catch (err) {
+        applyMysticGlow(FALLBACK_THEME_COLOR);
         fateOutput.innerText = "THE ORACLE IS RESTING.";
         dareOutput.innerText = "Come back tomorrow.";
         gsap.to([fateOutput, dareOutput], { opacity: 1, duration: 1 });
@@ -100,3 +182,4 @@ async function getFate(question) {
 }
 
 // init();
+startPlaceholderRotation();
