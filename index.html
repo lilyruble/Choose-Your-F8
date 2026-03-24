@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,21 +8,27 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.2.0/model-viewer.min.js"></script>
 </head>
+
 <body class="bg-black overflow-hidden flex items-center justify-center h-screen">
     <div class="noise"></div>
-    
+
     <div id="canvas-container" class="absolute inset-0 cursor-crosshair"></div>
 
     <!-- The 8-Ball Window Display -->
-    <div id="display-window" class="pointer-events-none absolute z-20 flex flex-col items-center justify-center text-center p-4">
+    <!-- <div id="display-window" class="pointer-events-none absolute z-20 flex flex-col items-center justify-center text-center p-4">
         <div id="fate-output" class="fate-text text-cyan-400 text-xl font-bold tracking-tighter opacity-0"></div>
         <div id="dare-output" class="dare-text text-white text-xs mt-2 max-w-[200px] font-light italic opacity-0"></div>
-    </div>
+    </div> -->
+
+    <!-- Use the model viewer api -->
+    <model-viewer alt="DUMMY TEXT YOU CAN CHANGE THIS LATER" src="magic_8_ball.glb" ar shadow-intensity="1"
+        camera-controls touch-action="pan-y"></model-viewer>
 
     <!-- UI Overlay -->
     <div class="absolute bottom-12 w-full max-w-sm px-6 z-30">
-        <input id="destiny-input" type="text" placeholder="ASK YOUR DESTINY..." 
+        <input id="destiny-input" type="text" placeholder="ASK YOUR DESTINY..."
             class="w-full bg-transparent border-b border-white/20 py-2 text-center text-white focus:outline-none focus:border-cyan-500 transition-all placeholder:opacity-20 uppercase tracking-[0.3em] text-[10px]">
     </div>
 
@@ -29,4 +36,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="app.js"></script>
 </body>
+
 </html>
