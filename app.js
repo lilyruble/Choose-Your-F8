@@ -74,6 +74,20 @@ function startPlaceholderRotation() {
     }, 2800);
 }
 
+function setupMobileKeyboardSpacing() {
+    if (!window.visualViewport) return;
+
+    const syncKeyboardOffset = () => {
+        const viewportDiff = window.innerHeight - window.visualViewport.height;
+        const keyboardOffset = viewportDiff > 120 ? `${Math.min(viewportDiff * 0.5, 180)}px` : '0px';
+        document.documentElement.style.setProperty('--keyboard-offset', keyboardOffset);
+    };
+
+    window.visualViewport.addEventListener('resize', syncKeyboardOffset);
+    window.visualViewport.addEventListener('scroll', syncKeyboardOffset);
+    syncKeyboardOffset();
+}
+
 function applyMysticGlow(newColor) {
     const root = document.documentElement;
     root.style.setProperty('--theme-glow-color', newColor || FALLBACK_THEME_COLOR);
@@ -183,3 +197,4 @@ Rules:
 
 // init();
 startPlaceholderRotation();
+setupMobileKeyboardSpacing();
