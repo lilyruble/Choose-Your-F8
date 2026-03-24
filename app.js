@@ -41,26 +41,26 @@ function animate() {
 }
 
 // Mouse movement interaction
-window.addEventListener('mousemove', (e) => {
-    const x = (e.clientX / window.innerWidth - 0.5) * 0.5;
-    const y = (e.clientY / window.innerHeight - 0.5) * 0.5;
-    gsap.to(ball.rotation, { y: x * 3, x: y * 3, duration: 0.8 });
-});
+// window.addEventListener('mousemove', (e) => {
+//     const x = (e.clientX / window.innerWidth - 0.5) * 0.5;
+//     const y = (e.clientY / window.innerHeight - 0.5) * 0.5;
+//     gsap.to(ball.rotation, { y: x * 3, x: y * 3, duration: 0.8 });
+// });
 
 // Input handling
 input.addEventListener('keypress', async (e) => {
     if (e.key === 'Enter' && input.value.trim()) {
         const question = input.value;
         input.value = '';
-        shakeBall();
+        // shakeBall();
         getFate(question);
     }
 });
 
-function shakeBall() {
-    gsap.to(ball.position, { x: 0.1, yoyo: true, repeat: 10, duration: 0.05 });
-    gsap.to([fateOutput, dareOutput], { opacity: 0, duration: 0.3 });
-}
+// function shakeBall() {
+//     gsap.to(ball.position, { x: 0.1, yoyo: true, repeat: 10, duration: 0.05 });
+//     gsap.to([fateOutput, dareOutput], { opacity: 0, duration: 0.3 });
+// }
 
 async function getFate(question) {
     const SYSTEM_PROMPT = `You are "Lucky 8 Fate," a digital Oracle for risk-takers. Edgy, wise, action-oriented. 
@@ -99,4 +99,4 @@ async function getFate(question) {
     }
 }
 
-init();
+// init();

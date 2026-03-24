@@ -14,17 +14,19 @@
 <body class="bg-black overflow-hidden flex items-center justify-center h-screen">
     <div class="noise"></div>
 
-    <div id="canvas-container" class="absolute inset-0 cursor-crosshair"></div>
+    <!-- <div id="canvas-container" class="absolute inset-0 cursor-crosshair"></div> -->
 
     <!-- The 8-Ball Window Display -->
-    <!-- <div id="display-window" class="pointer-events-none absolute z-20 flex flex-col items-center justify-center text-center p-4">
+    <div id="display-window"
+        class="pointer-events-none absolute z-20 flex flex-col items-center justify-center text-center p-4">
         <div id="fate-output" class="fate-text text-cyan-400 text-xl font-bold tracking-tighter opacity-0"></div>
         <div id="dare-output" class="dare-text text-white text-xs mt-2 max-w-[200px] font-light italic opacity-0"></div>
-    </div> -->
+    </div>
 
     <!-- Use the model viewer api -->
-    <model-viewer alt="DUMMY TEXT YOU CAN CHANGE THIS LATER" src="magic_8_ball.glb" ar shadow-intensity="1"
-        camera-controls touch-action="pan-y"></model-viewer>
+    <model-viewer id="magic-8-ball" alt="DUMMY TEXT YOU CAN CHANGE THIS LATER" src="magic_8_ball.glb" ar
+        shadow-intensity="1" camera-controls touch-action="pan-y" disable-zoom
+        camera-orbit="0deg 75deg 2.5m"></model-viewer>
 
     <!-- UI Overlay -->
     <div class="absolute bottom-12 w-full max-w-sm px-6 z-30">
