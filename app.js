@@ -2,7 +2,9 @@ let scene, camera, renderer, ball;
 const input = document.getElementById('destiny-input');
 const fateOutput = document.getElementById('fate-output');
 const dareOutput = document.getElementById('dare-output');
-const API_BASE_URL = 'https://lucky8-fate-api-588925072046.us-central1.run.app';
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === ''
+    ? 'http://localhost:8080'
+    : 'https://lucky8-fate-api-588925072046.us-central1.run.app';;
 
 function init() {
     scene = new THREE.Scene();
