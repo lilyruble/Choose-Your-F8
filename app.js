@@ -10,6 +10,7 @@ const API_BASE_URL = window.location.hostname === 'localhost' || window.location
     : 'https://lucky8-fate-api-588925072046.us-central1.run.app';
 const FALLBACK_THEME_COLOR = '#4285F4';
 let motionPermissionRequested = false;
+let oracleRequestInFlight = false;
 
 function setupMobileKeyboardSpacing() {
     if (!window.visualViewport) return;
@@ -207,12 +208,26 @@ Rules:
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const question = input.value.trim();
-    if (!question) return;
+    if (!question || oracleRequestInFlight) return;
+    oracleRequestInFlight = true;
     shakeHint.classList.remove('visible');
     triggerShakeAnimation();
-    await askTheOracle(question);
-    input.value = '';
-    setPromptOverlayVisibility();
+    try {
+        await askTheOracle(question);
+        input.value = '';
+        setPromptOverlayVisibility();
+    } finally {
+        oracleRequestInFlight = false;
+    }
+});
+
+/* Enter / Return submits the same as tapping "Ask" (iOS Return key with enterkeyhint="send"). */
+input.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    const value = input.value.trim();
+    if (!value) return;
+    e.preventDefault();
+    form.requestSubmit();
 });
 
 input.addEventListener('input', () => {

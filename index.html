@@ -38,8 +38,8 @@
         <!-- The 8-Ball Window Display -->
         <div id="display-window"
             class="pointer-events-none absolute z-20 flex flex-col items-center justify-center text-center p-4">
-            <div id="fate-output" class="fate-text text-cyan-400 text-xl font-bold tracking-tighter opacity-0"></div>
-            <div id="dare-output" class="dare-text text-white text-xs mt-2 max-w-[200px] font-light italic opacity-0"></div>
+            <div id="fate-output" class="fate-text fate-omen opacity-0"></div>
+            <div id="dare-output" class="dare-text dare-line opacity-0"></div>
         </div>
 
         <div class="ball-stage">
@@ -51,14 +51,15 @@
 
         <!-- UI Overlay -->
         <form id="fate-form" class="prompt-area" autocomplete="off">
-            <div class="input-shell">
-                <input id="destiny-input" name="destiny" type="text" enterkeyhint="done" maxlength="180">
+            <div class="input-shell input-row">
+                <input id="destiny-input" name="destiny" type="text" enterkeyhint="send" inputmode="text"
+                    autocapitalize="sentences" maxlength="180">
+                <button type="submit" class="ask-submit" id="ask-submit" aria-label="Submit question">Ask</button>
                 <p id="prompt-overlay" class="prompt-overlay">What is your 'Big Scary Thing'? Ask: Should I...<span
                         class="terminal-cursor">|</span></p>
             </div>
             <p class="shake-hint" id="shake-hint">Shake your phone to reveal your fate.</p>
             <p class="choose-fate-copy">Choose Your Fate</p>
-            <button type="submit" class="submit-hidden" aria-hidden="true" tabindex="-1"></button>
         </form>
     </main>
 
