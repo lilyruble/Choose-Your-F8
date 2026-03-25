@@ -10,29 +10,36 @@ body {
 
 :root {
     --theme-glow-color: #4285F4;
+    --theme-glow-rgb: 66, 133, 244;
     --keyboard-offset: 0px;
 }
 
 .app-shell {
     position: relative;
+    isolation: isolate;
     height: 100dvh;
     width: 100vw;
     overflow: hidden;
     box-sizing: border-box;
+    background: transparent;
 }
 
+/* Radial glow uses RGB triplets — works everywhere (no color-mix() required). */
 .mystic-background {
     width: 100%;
     height: 100%;
     position: absolute;
     inset: 0;
-    z-index: -2;
+    z-index: 0;
+    pointer-events: none;
     transition: background 2s ease-in-out;
-    background: radial-gradient(circle at center,
-            color-mix(in srgb, var(--theme-glow-color, #4285F4) 86%, #ffffff 14%) 0%,
-            color-mix(in srgb, var(--theme-glow-color, #4285F4) 48%, #0f1115 52%) 40%,
-            rgba(33, 37, 45, 0.62) 75%,
-            rgba(18, 18, 18, 0.92) 100%);
+    background: radial-gradient(
+            ellipse 125% 95% at 50% 36%,
+            rgba(var(--theme-glow-rgb), 0.55) 0%,
+            rgba(var(--theme-glow-rgb), 0.28) 28%,
+            rgba(var(--theme-glow-rgb), 0.12) 48%,
+            rgba(33, 37, 45, 0.55) 68%,
+            rgba(18, 18, 18, 0.96) 100%);
 }
 
 .noise {
@@ -57,13 +64,14 @@ body {
     border-radius: 50%;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -52%);
+    transform: translate(-50%, -48%);
 }
 
 #magic-8-ball {
     height: 48%;
     width: 100%;
-    transition: transform 0.28s ease, height 0.28s ease;
+    max-height: min(52vh, 720px);
+    transition: transform 0.28s ease, height 0.28s ease, max-height 0.28s ease;
 }
 
 #destiny-input {
@@ -110,8 +118,9 @@ body {
     text-align: left;
 }
 
+/* ~1.8× base scale (responsive) */
 .intro-title {
-    font-size: clamp(1.2rem, 1.8vw, 1.7rem);
+    font-size: clamp(2.16rem, 3.24vw, 3.06rem);
     font-weight: bolder;
     line-height: 1.35;
     margin-bottom: 0.7rem;
@@ -120,7 +129,7 @@ body {
 }
 
 .intro-copy {
-    font-size: clamp(0.88rem, 1.1vw, 1.15rem);
+    font-size: clamp(1.584rem, 1.98vw, 2.07rem);
     line-height: 1.42;
     margin-bottom: 0.95rem;
     color: rgba(255, 255, 255, 0.78);
@@ -182,18 +191,22 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-bottom: 12vh;
+    /* Push 8-ball down ~20% from prior vertical center */
+    padding-top: 18vh;
+    padding-bottom: 8vh;
     z-index: 10;
 }
 
 .prompt-area {
     position: absolute;
-    bottom: calc(4.3rem + env(safe-area-inset-bottom) + var(--keyboard-offset));
+    /* ~15% closer to the ball (higher on screen) */
+    bottom: calc(4.3rem + 12vh + env(safe-area-inset-bottom) + var(--keyboard-offset));
     left: 50%;
     transform: translateX(-50%);
     width: min(74vw, 660px);
     text-align: center;
     z-index: 30;
+    box-sizing: border-box;
 }
 
 .input-shell {
@@ -245,47 +258,64 @@ body {
     transform: scale(0.9);
 }
 
+/* Desktop: ~20% larger ball, scales with viewport */
+@media (min-width: 769px) {
+    #magic-8-ball {
+        height: 58%;
+        max-height: min(62vh, 780px);
+    }
+
+    #display-window {
+        transform: translate(-50%, -46%);
+    }
+}
+
 @media (max-width: 768px) {
     .ritual-intro {
         max-width: 100%;
+        width: 100%;
         padding: 0 1rem;
         top: 0.5rem;
     }
 
+    /* ~1.8× prior mobile sizes, clamped */
     .intro-title {
-        font-size: 0.68rem;
-        margin-bottom: 0.38rem;
-    }
-
-    .intro-copy {
-        font-size: 0.5rem;
-        line-height: 1.18;
+        font-size: clamp(1.1rem, 3.8vw, 1.35rem);
+        line-height: 1.25;
         margin-bottom: 0.45rem;
     }
 
+    .intro-copy {
+        font-size: clamp(0.85rem, 1.9vw, 1.05rem);
+        line-height: 1.22;
+        margin-bottom: 0.5rem;
+    }
+
     .rule {
-        font-size: 0.46rem;
-        line-height: 1.15;
-        margin-bottom: 0.25rem;
+        font-size: clamp(0.75rem, 1.4vw, 0.95rem);
+        line-height: 1.18;
+        margin-bottom: 0.28rem;
     }
 
     #display-window {
-        width: 145px;
-        height: 145px;
-        transform: translate(-50%, -53%);
+        width: 152px;
+        height: 152px;
+        transform: translate(-50%, -50%);
     }
 
     .ball-stage {
-        padding-bottom: 15vh;
+        padding-top: 16vh;
+        padding-bottom: 6vh;
     }
 
     #magic-8-ball {
         height: 44%;
+        max-height: min(48vh, 520px);
     }
 
     .prompt-area {
         width: 92vw;
-        bottom: calc(3.2rem + env(safe-area-inset-bottom) + var(--keyboard-offset));
+        bottom: calc(3.2rem + 10vh + env(safe-area-inset-bottom) + var(--keyboard-offset));
     }
 
     #destiny-input {
@@ -299,67 +329,12 @@ body {
     }
 
     .choose-fate-copy {
-        margin-top: 0.54rem;
+        margin-top: 0.52rem;
         font-size: 0.72rem;
     }
 
     .shake-hint {
         font-size: 0.54rem;
         margin-top: 0.45rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .ritual-intro {
-        max-width: 100%;
-        width: 100%;
-        padding-right: 1rem;
-        top: 0.7rem;
-    }
-
-    .intro-title {
-        font-size: 0.72rem;
-        line-height: 1.25;
-        margin-bottom: 0.45rem;
-    }
-
-    .intro-copy {
-        font-size: 0.56rem;
-        line-height: 1.2;
-        margin-bottom: 0.5rem;
-    }
-
-    .rule {
-        font-size: 0.52rem;
-        line-height: 1.18;
-        margin-bottom: 0.32rem;
-    }
-
-    .prompt-area {
-        bottom: calc(5.4rem + env(safe-area-inset-bottom) + var(--keyboard-offset));
-        max-width: 92vw;
-        margin-bottom: 0;
-    }
-
-    .choose-fate-copy {
-        font-size: 0.72rem;
-        margin-top: 0.52rem;
-        line-height: 1.2;
-    }
-
-    #destiny-input {
-        font-size: 0.88rem;
-        padding-top: 0.62rem;
-        padding-bottom: 0.62rem;
-        line-height: 1.15;
-    }
-
-    #display-window {
-        width: 152px;
-        height: 152px;
-    }
-
-    #magic-8-ball {
-        height: 50%;
     }
 }

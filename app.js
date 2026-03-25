@@ -27,9 +27,23 @@ function setupMobileKeyboardSpacing() {
     syncKeyboardOffset();
 }
 
+function hexToRgbTriplet(hex) {
+    if (!hex || typeof hex !== 'string') return '66, 133, 244';
+    let h = hex.trim().replace('#', '');
+    if (h.length === 3) {
+        h = h.split('').map((c) => c + c).join('');
+    }
+    if (h.length !== 6) return '66, 133, 244';
+    const n = parseInt(h, 16);
+    if (Number.isNaN(n)) return '66, 133, 244';
+    return `${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}`;
+}
+
 function applyMysticGlow(newColor) {
+    const hex = newColor || FALLBACK_THEME_COLOR;
     const root = document.documentElement;
-    root.style.setProperty('--theme-glow-color', newColor || FALLBACK_THEME_COLOR);
+    root.style.setProperty('--theme-glow-color', hex);
+    root.style.setProperty('--theme-glow-rgb', hexToRgbTriplet(hex));
 }
 
 function inferThemeColorFromQuestion(question) {
@@ -216,6 +230,7 @@ input.addEventListener('blur', () => {
     setPromptOverlayVisibility();
 });
 
+applyMysticGlow(FALLBACK_THEME_COLOR);
 setupMobileKeyboardSpacing();
 initShakeTracking();
 setPromptOverlayVisibility();
