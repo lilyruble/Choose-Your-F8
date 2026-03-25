@@ -14,9 +14,12 @@ body {
 }
 
 :root {
-    --theme-glow-color: #4285F4;
-    --theme-glow-rgb: 66, 133, 244;
+    --theme-glow-color: #4a4d52;
+    /* Ominous chrome-grey default; API updates RGB on divination */
+    --theme-glow-rgb: 74, 77, 82;
     --keyboard-offset: 0px;
+    /* Move ball + prompt block down without scroll */
+    --layout-shift-down: 15vh;
 }
 
 .app-shell {
@@ -32,7 +35,7 @@ body {
     background: transparent;
 }
 
-/* Radial glow uses RGB triplets — works everywhere (no color-mix() required). */
+/* Ominous chrome radial: cool grey center → deep charcoal edge */
 .mystic-background {
     width: 100%;
     height: 100%;
@@ -41,13 +44,12 @@ body {
     z-index: 0;
     pointer-events: none;
     transition: background 2s ease-in-out;
-    background: radial-gradient(
-            ellipse 125% 95% at 50% 36%,
-            rgba(var(--theme-glow-rgb), 0.55) 0%,
-            rgba(var(--theme-glow-rgb), 0.28) 28%,
-            rgba(var(--theme-glow-rgb), 0.12) 48%,
-            rgba(33, 37, 45, 0.55) 68%,
-            rgba(18, 18, 18, 0.96) 100%);
+    background: radial-gradient(ellipse 130% 100% at 50% 40%,
+            rgba(120, 122, 128, 0.22) 0%,
+            rgba(var(--theme-glow-rgb), 0.42) 12%,
+            rgba(var(--theme-glow-rgb), 0.22) 32%,
+            rgba(28, 30, 34, 0.88) 62%,
+            rgba(10, 10, 12, 0.98) 100%);
 }
 
 .noise {
@@ -95,16 +97,16 @@ body {
 }
 
 #magic-8-ball {
-    height: 48%;
+    height: 53%;
     width: 100%;
-    max-height: min(52vh, 720px);
+    max-height: min(57vh, 792px);
     transition: transform 0.28s ease, height 0.28s ease, max-height 0.28s ease;
 }
 
 .input-row {
     display: flex;
     align-items: flex-end;
-    gap: 0.45rem;
+    gap: 0.28rem;
     width: 100%;
 }
 
@@ -129,28 +131,30 @@ body {
 .ask-submit {
     flex-shrink: 0;
     align-self: flex-end;
-    margin-bottom: 0.35rem;
-    padding: 0.35rem 0.55rem;
+    margin-bottom: 0.32rem;
+    padding: 0.45rem 0.75rem;
     font-family: "Avenir Next", "Inter", "Helvetica Neue", Arial, sans-serif;
-    font-size: 0.72rem;
-    letter-spacing: 0.06em;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.85);
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    border-radius: 4px;
+    color: rgba(255, 255, 255, 0.95);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.06) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12);
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
 }
 
-.ask-submit:active {
-    background: rgba(255, 255, 255, 0.14);
+.ask-submit:hover {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+    border-color: rgba(138, 180, 248, 0.55);
 }
 
-@media (min-width: 769px) {
-    .ask-submit {
-        display: none;
-    }
+.ask-submit:active {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(1px);
 }
 
 #destiny-input:focus {
@@ -180,18 +184,25 @@ body {
     text-align: left;
 }
 
-/* ~1.8× base scale (responsive) */
+/* Desktop: title + subheader toned down; intro-body keeps “perfect” scale */
 .intro-title {
-    font-size: clamp(2.16rem, 3.24vw, 3.06rem);
+    font-size: clamp(1.35rem, 2vw, 1.75rem);
     font-weight: bolder;
-    line-height: 1.35;
-    margin-bottom: 0.7rem;
+    line-height: 1.3;
+    margin-bottom: 0.45rem;
     color: #c9f8ff;
     text-shadow: 0 0 8px rgba(34, 211, 238, 0.35);
 }
 
-.intro-copy {
-    font-size: clamp(1.584rem, 1.98vw, 2.07rem);
+.intro-subheader {
+    font-size: clamp(1.05rem, 1.35vw, 1.28rem);
+    line-height: 1.38;
+    margin-bottom: 0.5rem;
+    color: rgba(230, 240, 255, 0.9);
+}
+
+.intro-body {
+    font-size: clamp(1.05rem, 1.35vw, 1.28rem);
     line-height: 1.42;
     margin-bottom: 0.95rem;
     color: rgba(255, 255, 255, 0.78);
@@ -253,19 +264,19 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Push 8-ball down ~20% from prior vertical center */
-    padding-top: 18vh;
+    padding-top: calc(18vh + var(--layout-shift-down));
     padding-bottom: 8vh;
     z-index: 10;
 }
 
 .prompt-area {
     position: absolute;
-    /* ~15% closer to the ball (higher on screen) */
-    bottom: calc(4.3rem + 12vh + env(safe-area-inset-bottom) + var(--keyboard-offset));
+    bottom: max(0.75rem,
+            calc(4.3rem + 12vh - var(--layout-shift-down) + env(safe-area-inset-bottom) + var(--keyboard-offset)));
     left: 50%;
     transform: translateX(-50%);
-    width: min(74vw, 660px);
+    /* 10% narrower line: was 74vw / 660px → ×0.8 */
+    width: min(59.2vw, 528px);
     text-align: center;
     z-index: 30;
     box-sizing: border-box;
@@ -279,7 +290,7 @@ body {
 .prompt-overlay {
     position: absolute;
     left: 0;
-    right: 0;
+    right: 4.35rem;
     top: 50%;
     transform: translateY(-50%);
     margin: 0;
@@ -320,15 +331,15 @@ body {
     transform: scale(0.9);
 }
 
-/* Desktop: ~20% larger ball, scales with viewport */
+/* Desktop: larger ball (+10% vs prior 58%), scales with viewport */
 @media (min-width: 769px) {
     #magic-8-ball {
-        height: 58%;
-        max-height: min(62vh, 780px);
+        height: 64%;
+        max-height: min(68vh, 858px);
     }
 
     #display-window {
-        transform: translate(-50%, -46%);
+        transform: translate(-50%, -42%);
     }
 }
 
@@ -338,70 +349,76 @@ body {
         width: 100%;
         padding: 0 0.75rem;
         top: 0.35rem;
-        /* Keep intro in upper band only — must not overlap ball or input */
-        max-height: 28vh;
+        max-height: 42vh;
         overflow: hidden;
         pointer-events: none;
     }
 
+    /* ~2× prior mobile intro scale */
     .intro-title {
-        font-size: clamp(0.58rem, 2.6vw, 0.72rem);
+        font-size: clamp(1.05rem, 4.8vw, 1.35rem);
         line-height: 1.2;
-        margin-bottom: 0.28rem;
+        margin-bottom: 0.4rem;
     }
 
-    .intro-copy {
-        font-size: clamp(0.5rem, 2.2vw, 0.62rem);
-        line-height: 1.18;
-        margin-bottom: 0.32rem;
+    .intro-subheader {
+        font-size: clamp(0.95rem, 4.2vw, 1.2rem);
+        line-height: 1.22;
+        margin-bottom: 0.38rem;
+    }
+
+    .intro-body {
+        font-size: clamp(0.95rem, 4.2vw, 1.15rem);
+        line-height: 1.2;
+        margin-bottom: 0.38rem;
     }
 
     .rule {
-        font-size: clamp(0.45rem, 2vw, 0.56rem);
-        line-height: 1.15;
+        font-size: clamp(0.68rem, 2.8vw, 0.88rem);
+        line-height: 1.12;
         margin-bottom: 0.18rem;
     }
 
-    /* Fate overlay sits on ball band, below intro — not over intro copy */
     #display-window {
-        width: min(96vw, 340px);
+        width: min(76.8vw, 300px);
         height: auto;
-        min-height: 120px;
-        top: 44vh;
+        min-height: 110px;
+        top: calc(44vh + var(--layout-shift-down));
         left: 50%;
         transform: translate(-50%, -50%);
         padding: 0.35rem 0.25rem;
         box-sizing: border-box;
     }
 
-    /* ~10% smaller than prior omen (was ~1.25rem); dare unchanged */
     .fate-omen {
         font-size: 1.125rem;
-        max-width: min(96vw, 340px);
+        max-width: min(76.8vw, 300px);
     }
 
     .dare-line {
-        max-width: min(96vw, 340px);
+        max-width: min(76.8vw, 300px);
     }
 
     .ball-stage {
-        padding-top: 14vh;
-        padding-bottom: 5vh;
+        padding-top: calc(14vh + var(--layout-shift-down));
+        padding-bottom: 4vh;
     }
 
     #magic-8-ball {
-        height: 40%;
-        max-height: min(42vh, 480px);
+        height: 44%;
+        max-height: min(46vh, 528px);
     }
 
-    /* Wider response column (~+5% each side vs 92vw → ~96vw) */
+    .input-row {
+        gap: 0.22rem;
+    }
+
+    /* 10% shorter input line (96vw×0.8); block shifted down with --layout-shift-down */
     .prompt-area {
-        width: 96vw;
-        max-width: 96vw;
-        bottom: max(
-            calc(15vh + env(safe-area-inset-bottom)),
-            calc(2.6rem + env(safe-area-inset-bottom) + var(--keyboard-offset))
-        );
+        width: 76.8vw;
+        max-width: 76.8vw;
+        bottom: max(0.75rem,
+                calc(2.4rem + env(safe-area-inset-bottom) + var(--keyboard-offset)));
         padding-left: 0;
         padding-right: 0;
     }
@@ -415,14 +432,14 @@ body {
     .prompt-overlay {
         font-size: 0.72rem;
         line-height: 1.2;
-        right: 3.15rem;
+        right: 3.35rem;
         left: 0;
         text-align: center;
-        padding-right: 0.15rem;
+        padding-right: 0.1rem;
     }
 
     .choose-fate-copy {
-        margin-top: 0.42rem;
+        margin-top: 0.38rem;
         font-size: 0.62rem;
     }
 
@@ -432,7 +449,7 @@ body {
     }
 
     .ask-submit {
-        font-size: 0.65rem;
-        padding: 0.3rem 0.45rem;
+        font-size: 0.62rem;
+        padding: 0.38rem 0.55rem;
     }
 }

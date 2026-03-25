@@ -8,7 +8,8 @@ const modelViewer = document.getElementById('magic-8-ball');
 const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === ''
     ? 'http://localhost:8080'
     : 'https://lucky8-fate-api-588925072046.us-central1.run.app';
-const FALLBACK_THEME_COLOR = '#4285F4';
+/* Default ominous chrome-grey center; category colors override after first ask. */
+const FALLBACK_THEME_COLOR = '#4a4d52';
 let motionPermissionRequested = false;
 let oracleRequestInFlight = false;
 
@@ -29,14 +30,14 @@ function setupMobileKeyboardSpacing() {
 }
 
 function hexToRgbTriplet(hex) {
-    if (!hex || typeof hex !== 'string') return '66, 133, 244';
+    if (!hex || typeof hex !== 'string') return '74, 77, 82';
     let h = hex.trim().replace('#', '');
     if (h.length === 3) {
         h = h.split('').map((c) => c + c).join('');
     }
-    if (h.length !== 6) return '66, 133, 244';
+    if (h.length !== 6) return '74, 77, 82';
     const n = parseInt(h, 16);
-    if (Number.isNaN(n)) return '66, 133, 244';
+    if (Number.isNaN(n)) return '74, 77, 82';
     return `${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}`;
 }
 
