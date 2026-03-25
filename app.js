@@ -1,77 +1,30 @@
-let scene, camera, renderer, ball;
 const input = document.getElementById('destiny-input');
 const fateOutput = document.getElementById('fate-output');
 const dareOutput = document.getElementById('dare-output');
+const form = document.getElementById('fate-form');
+const promptOverlay = document.getElementById('prompt-overlay');
+const shakeHint = document.getElementById('shake-hint');
+const modelViewer = document.getElementById('magic-8-ball');
 const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === ''
     ? 'http://localhost:8080'
-    : 'https://lucky8-fate-api-588925072046.us-central1.run.app';;
-const placeholderPrompts = [
-    'Should I send that risky text?',
-    'Should I sign up for that marathon?',
-    'Should I start the business today?'
-];
-let placeholderIndex = 0;
-const FALLBACK_THEME_COLOR = '#FBC02D';
+    : 'https://lucky8-fate-api-588925072046.us-central1.run.app';
+const FALLBACK_THEME_COLOR = '#4285F4';
+let motionPermissionRequested = false;
 
-function init() {
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById('canvas-container').appendChild(renderer.domElement);
+function setupMobileKeyboardSpacing() {
+    if (!window.visualViewport) return;
 
-    // Chrome Sphere with Iridescence
-    const geometry = new THREE.SphereGeometry(2, 64, 64);
-    const material = new THREE.MeshPhysicalMaterial({
-        color: 0x111111,
-        metalness: 1,
-        roughness: 0.1,
-        clearcoat: 1,
-        iridescence: 1,
-        iridescenceIOR: 1.5,
-    });
-    ball = new THREE.Mesh(geometry, material);
-    scene.add(ball);
+    const syncKeyboardOffset = () => {
+        const viewportDiff = window.innerHeight - window.visualViewport.height;
+        const isKeyboardOpen = viewportDiff > 120;
+        const keyboardOffset = isKeyboardOpen ? `${Math.min(viewportDiff * 0.5, 180)}px` : '0px';
+        document.documentElement.style.setProperty('--keyboard-offset', keyboardOffset);
+        document.body.classList.toggle('keyboard-open', isKeyboardOpen);
+    };
 
-    const light = new THREE.PointLight(0x4444ff, 2, 50);
-    light.position.set(5, 5, 5);
-    scene.add(light);
-    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
-
-    camera.position.z = 5;
-    animate();
-}
-
-function animate() {
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
-}
-
-// Mouse movement interaction
-// window.addEventListener('mousemove', (e) => {
-//     const x = (e.clientX / window.innerWidth - 0.5) * 0.5;
-//     const y = (e.clientY / window.innerHeight - 0.5) * 0.5;
-//     gsap.to(ball.rotation, { y: x * 3, x: y * 3, duration: 0.8 });
-// });
-
-// Input handling
-input.addEventListener('keypress', async (e) => {
-    if (e.key === 'Enter' && input.value.trim()) {
-        const question = input.value;
-        input.value = '';
-        // shakeBall();
-        getFate(question);
-    }
-});
-
-function startPlaceholderRotation() {
-    if (!input) return;
-
-    setInterval(() => {
-        if (document.activeElement === input || input.value.trim()) return;
-        placeholderIndex = (placeholderIndex + 1) % placeholderPrompts.length;
-        input.placeholder = placeholderPrompts[placeholderIndex];
-    }, 2800);
+    window.visualViewport.addEventListener('resize', syncKeyboardOffset);
+    window.visualViewport.addEventListener('scroll', syncKeyboardOffset);
+    syncKeyboardOffset();
 }
 
 function applyMysticGlow(newColor) {
@@ -81,18 +34,19 @@ function applyMysticGlow(newColor) {
 
 function inferThemeColorFromQuestion(question) {
     const q = question.toLowerCase();
-    if (/(love|date|relationship|romance|partner|ex|crush)/.test(q)) return '#880E4F';
-    if (/(career|job|work|promotion|business|interview|salary|startup)/.test(q)) return '#1565C0';
-    if (/(personal|habit|confidence|fear|family|friend|boundary|no)/.test(q)) return '#2E7D32';
-    if (/(health|fitness|marathon|workout|sleep|diet|wellness|vitality)/.test(q)) return '#7B1FA2';
+    if (/(career|job|work|promotion|business|interview|salary|startup)/.test(q)) return '#4285F4';
+    if (/(create|creative|innovation|build|art|idea|learn|study|design)/.test(q)) return '#FBBC04';
+    if (/(love|date|relationship|romance|partner|ex|crush|social|friend)/.test(q)) return '#EA4335';
+    if (/(personal|habit|confidence|growth|fear|wellness|mindset)/.test(q)) return '#34A853';
     return FALLBACK_THEME_COLOR;
 }
 
 function parseFatePayload(data, question) {
-    if (data && typeof data === 'object' && data.fate && data.dare) {
+    if (data && typeof data === 'object' && (data.omen || data.fate) && data.dare) {
         return {
-            fate: String(data.fate).trim(),
+            omen: String(data.omen || data.fate).trim(),
             dare: String(data.dare).trim(),
+            category: String(data.category || 'Unknown').trim(),
             themeColor: data.themeColor || inferThemeColorFromQuestion(question)
         };
     }
@@ -101,18 +55,20 @@ function parseFatePayload(data, question) {
 
     if (!rawText) {
         return {
-            fate: 'Signals are unclear.',
+            omen: 'Signals are unclear.',
             dare: 'Take one brave step now.',
+            category: 'Unknown',
             themeColor: inferThemeColorFromQuestion(question)
         };
     }
 
     try {
         const parsed = JSON.parse(rawText);
-        if (parsed && parsed.fate && parsed.dare) {
+        if (parsed && (parsed.omen || parsed.fate) && parsed.dare) {
             return {
-                fate: String(parsed.fate).trim(),
+                omen: String(parsed.omen || parsed.fate).trim(),
                 dare: String(parsed.dare).trim(),
+                category: String(parsed.category || 'Unknown').trim(),
                 themeColor: parsed.themeColor || inferThemeColorFromQuestion(question)
             };
         }
@@ -121,38 +77,91 @@ function parseFatePayload(data, question) {
     }
 
     const [fatePart, darePart] = rawText.split('[DARE]:');
-    const fate = fatePart.replace('[FATE]:', '').trim();
+    const omen = fatePart.replace('[FATE]:', '').replace('[OMEN]:', '').trim();
     const dare = darePart ? darePart.trim() : 'Trust your instinct.';
     return {
-        fate: fate || 'Signals are unclear.',
+        omen: omen || 'Signals are unclear.',
         dare,
+        category: 'Unknown',
         themeColor: inferThemeColorFromQuestion(question)
     };
 }
 
-// function shakeBall() {
-//     gsap.to(ball.position, { x: 0.1, yoyo: true, repeat: 10, duration: 0.05 });
-//     gsap.to([fateOutput, dareOutput], { opacity: 0, duration: 0.3 });
-// }
+function setPromptOverlayVisibility() {
+    if (!promptOverlay) return;
+    const hasText = input.value.trim().length > 0;
+    promptOverlay.style.opacity = hasText ? '0' : '1';
+}
 
-async function getFate(question) {
-    const SYSTEM_PROMPT = `You are "Lucky 8 Fate," a digital Oracle for risk-takers.
-Return JSON only in this exact shape:
-{"category":"...","fate":"...","dare":"...","themeColor":"#RRGGBB"}
+function triggerShakeAnimation() {
+    if (!modelViewer) return;
+    gsap.killTweensOf(modelViewer);
+    gsap.fromTo(modelViewer, { x: -6 }, { x: 6, duration: 0.07, yoyo: true, repeat: 5, ease: 'power1.inOut' });
+}
 
-Rules:
-1) If malicious/illegal: category="The Unknown", fate="The path is dark.", dare="This is a mistake. Turn away.", themeColor="#FBC02D".
-2) Category + fear focus + tone mapping:
-- Physical Vitality | Physical limits / starting routines | Grounding & Primal | themeColor="#7B1FA2"
-- Intellectual Curiosity | Imposter syndrome / learning | Crisp & Expanding | themeColor="#1565C0"
-- Radical Candor | Boundaries / saying 'No' | Sharp & Courageous | themeColor="#880E4F"
-- Digital Detox | FOMO / being offline | Zen & Minimalist | themeColor="#2E7D32"
-3) If question does not clearly fit a category: use category="The Unknown", make fate especially cryptic, and dare a random act of courage. themeColor="#FBC02D".
-4) If user asks passive "Will I..." question, gently reframe fate toward user agency.
-5) fate must be 3-8 words; dare must be one specific low-stakes micro-challenge.
-6) Keep total response concise and action-oriented.`;
+function maybeShowShakeHint() {
+    const shouldShow = input.value.trim().length > 5 && document.activeElement === input;
+    shakeHint.classList.toggle('visible', shouldShow);
+}
+
+function initShakeTracking() {
+    let lastX = 0;
+    let lastY = 0;
+    let lastZ = 0;
+    const threshold = 15;
+
+    window.addEventListener('devicemotion', (event) => {
+        const acc = event.accelerationIncludingGravity;
+        if (!acc || typeof acc.x !== 'number') return;
+
+        const deltaX = Math.abs(lastX - acc.x);
+        const deltaY = Math.abs(lastY - acc.y);
+        const typedEnough = input.value.trim().length > 5;
+
+        if ((deltaX + deltaY) > threshold && typedEnough) {
+            triggerShakeAnimation();
+            form.requestSubmit();
+        }
+
+        lastX = acc.x;
+        lastY = acc.y;
+        lastZ = acc.z;
+    });
+}
+
+async function ensureMotionPermission() {
+    if (motionPermissionRequested) return;
+    motionPermissionRequested = true;
+
+    const needsPermission = typeof DeviceMotionEvent !== 'undefined'
+        && typeof DeviceMotionEvent.requestPermission === 'function';
+    if (!needsPermission) return;
 
     try {
+        await DeviceMotionEvent.requestPermission();
+    } catch (err) {
+        // Ignore permission denial.
+    }
+}
+
+async function askTheOracle(question) {
+    const SYSTEM_PROMPT = `You are "Lucky 8 Fate," a digital Oracle for risk-takers.
+Return JSON only in this exact shape:
+{"category":"...","omen":"...","dare":"...","themeColor":"#RRGGBB"}
+
+Rules:
+1) If malicious/illegal: category="Unknown", omen="The path is dark.", dare="This is a mistake. Turn away.", themeColor="#4285F4".
+2) Category mapping:
+- Career => themeColor="#4285F4"
+- Innovation/Creativity => themeColor="#FBBC04"
+- Social/Romance => themeColor="#EA4335"
+- Personal Growth => themeColor="#34A853"
+3) If user asks passive "Will I..." question, reframe omen toward agency.
+4) omen must be cryptic and concise, dare must be a specific low-stakes action.
+5) Keep response tight and action-oriented.`;
+
+    try {
+        gsap.to([fateOutput, dareOutput], { opacity: 0, duration: 0.2 });
         const response = await fetch(`${API_BASE_URL}/fate`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -168,7 +177,7 @@ Rules:
         const data = await response.json();
         const payload = parseFatePayload(data, question);
         applyMysticGlow(payload.themeColor);
-        fateOutput.innerText = payload.fate;
+        fateOutput.innerText = payload.omen;
         dareOutput.innerText = `DARE: ${payload.dare}`;
 
         gsap.to([fateOutput, dareOutput], { opacity: 1, duration: 1, delay: 0.5 });
@@ -181,5 +190,32 @@ Rules:
     }
 }
 
-// init();
-startPlaceholderRotation();
+form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const question = input.value.trim();
+    if (!question) return;
+    shakeHint.classList.remove('visible');
+    triggerShakeAnimation();
+    await askTheOracle(question);
+    input.value = '';
+    setPromptOverlayVisibility();
+});
+
+input.addEventListener('input', () => {
+    setPromptOverlayVisibility();
+    maybeShowShakeHint();
+});
+
+input.addEventListener('focus', async () => {
+    await ensureMotionPermission();
+    maybeShowShakeHint();
+});
+
+input.addEventListener('blur', () => {
+    shakeHint.classList.remove('visible');
+    setPromptOverlayVisibility();
+});
+
+setupMobileKeyboardSpacing();
+initShakeTracking();
+setPromptOverlayVisibility();

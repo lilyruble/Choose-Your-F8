@@ -14,44 +14,53 @@
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.2.0/model-viewer.min.js"></script>
 </head>
 
-<body class="bg-black overflow-hidden flex items-center justify-center h-screen">
-    <div class="mystic-background"></div>
-    <div class="noise"></div>
+<body>
+    <main class="app-shell">
+        <div class="mystic-background"></div>
+        <div class="noise"></div>
 
     <!-- <div id="canvas-container" class="absolute inset-0 cursor-crosshair"></div> -->
 
-    <div class="ritual-intro absolute top-8 left-0 w-full max-w-2xl px-6 z-30 text-left">
-        <p class="intro-title">The original 8-Ball predicted the future. This one helps you create it.</p>
-        <p class="intro-copy">We all have a "Big Scary Thing" we're avoiding. Whether it's in your career, romance, or
-            personal life, the Oracle does not just give you an answer - it gives you a Dare.</p>
-        <div class="rules-container">
-            <p class="rule rule-1">1. <strong>Ask "Should I...":</strong> Do not ask what will happen. Ask what you
-                should do.</p>
-            <p class="rule rule-2">2. <strong>Respect the Limit:</strong> You have 8 Divinations per day. Use them on
-                the desires that actually matter.</p>
-            <p class="rule rule-3">3. <strong>Choose Your Fate:</strong> The Oracle provides the spark; you provide the
-                fire. Trust your intuition and embrace the unknown.</p>
+        <div class="ritual-intro">
+            <p class="intro-title">The original 8-Ball predicted the future. This one helps you create it.</p>
+            <p class="intro-copy">We all have a "Big Scary Thing" we're avoiding. Whether it's in your career, romance, or
+                personal life, the Oracle does not just give you an answer - it gives you a Dare.</p>
+            <div class="rules-container">
+                <p class="rule rule-1">1. <strong>Ask "Should I...":</strong> Do not ask what will happen. Ask what you
+                    should do.</p>
+                <p class="rule rule-2">2. <strong>Respect the Limit:</strong> You have 8 Divinations per day. Use them on
+                    the desires that actually matter.</p>
+                <p class="rule rule-3">3. <strong>Choose Your Fate:</strong> The Oracle provides the spark; you provide the
+                    fire. Trust your intuition and embrace the unknown.</p>
+            </div>
         </div>
-    </div>
 
-    <!-- The 8-Ball Window Display -->
-    <div id="display-window"
-        class="pointer-events-none absolute z-20 flex flex-col items-center justify-center text-center p-4">
-        <div id="fate-output" class="fate-text text-cyan-400 text-xl font-bold tracking-tighter opacity-0"></div>
-        <div id="dare-output" class="dare-text text-white text-xs mt-2 max-w-[200px] font-light italic opacity-0"></div>
-    </div>
+        <!-- The 8-Ball Window Display -->
+        <div id="display-window"
+            class="pointer-events-none absolute z-20 flex flex-col items-center justify-center text-center p-4">
+            <div id="fate-output" class="fate-text text-cyan-400 text-xl font-bold tracking-tighter opacity-0"></div>
+            <div id="dare-output" class="dare-text text-white text-xs mt-2 max-w-[200px] font-light italic opacity-0"></div>
+        </div>
 
-    <!-- Use the model viewer api -->
-    <model-viewer id="magic-8-ball" alt="DUMMY TEXT YOU CAN CHANGE THIS LATER" src="magic_8_ball.glb" ar
-        shadow-intensity="1" camera-controls touch-action="pan-y" disable-zoom disable-pan
-        camera-orbit="0deg 75deg 2.5m"></model-viewer>
+        <div class="ball-stage">
+            <!-- Use the model viewer api -->
+            <model-viewer id="magic-8-ball" alt="DUMMY TEXT YOU CAN CHANGE THIS LATER" src="magic_8_ball.glb"
+                shadow-intensity="1" camera-controls touch-action="pan-y" disable-zoom disable-pan
+                camera-orbit="0deg 75deg 2.5m"></model-viewer>
+        </div>
 
-    <!-- UI Overlay -->
-    <div class="prompt-area absolute bottom-20 left-1/2 -translate-x-1/2 w-full max-w-xl px-6 z-30 text-center">
-        <input id="destiny-input" type="text" placeholder="Should I send that risky text?"
-            class="w-full bg-transparent border-b-2 border-white/30 py-3 text-center text-white focus:outline-none focus:border-cyan-500 transition-all placeholder:opacity-80 tracking-wide text-base">
-        <p class="choose-fate-copy mt-4">Choose Your Fate</p>
-    </div>
+        <!-- UI Overlay -->
+        <form id="fate-form" class="prompt-area" autocomplete="off">
+            <div class="input-shell">
+                <input id="destiny-input" name="destiny" type="text" enterkeyhint="done" maxlength="180">
+                <p id="prompt-overlay" class="prompt-overlay">What is your 'Big Scary Thing'? Ask: Should I...<span
+                        class="terminal-cursor">|</span></p>
+            </div>
+            <p class="shake-hint" id="shake-hint">Shake your phone to reveal your fate.</p>
+            <p class="choose-fate-copy">Choose Your Fate</p>
+            <button type="submit" class="submit-hidden" aria-hidden="true" tabindex="-1"></button>
+        </form>
+    </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
