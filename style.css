@@ -44,7 +44,7 @@ body {
     z-index: 0;
     pointer-events: none;
     transition: background 2s ease-in-out;
-    background: radial-gradient(ellipse 130% 100% at 50% 40%,
+    background: radial-gradient(ellipse 130% 100% at 50% 55%,
             rgba(120, 122, 128, 0.22) 0%,
             rgba(var(--theme-glow-rgb), 0.42) 12%,
             rgba(var(--theme-glow-rgb), 0.22) 32%,
@@ -451,5 +451,14 @@ body {
     .ask-submit {
         font-size: 0.62rem;
         padding: 0.38rem 0.55rem;
+    }
+
+    html,
+    body {
+        overflow-x: hidden;
+        overflow-y: hidden;
+        overscroll-behavior-x: none;
+        overscroll-behavior-y: none;
+        max-width: 100vw;
     }
 }
