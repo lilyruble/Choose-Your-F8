@@ -363,7 +363,7 @@ body {
         font-size: clamp(1.05rem, 4.8vw, 1.35rem);
         line-height: 1.2;
         margin-bottom: 0.7rem;
-        padding-bottom: 0.5rem;
+        padding-bottom: 5rem;
     }
 
     .intro-subheader {
