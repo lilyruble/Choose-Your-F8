@@ -93,9 +93,8 @@ body {
 }
 
 #display-window {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
+    width: 260px;
+    height: 220px;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -48%);
@@ -189,7 +188,7 @@ body {
     text-align: left;
 }
 
-/* Desktop: title + subheader toned down; intro-body keeps “perfect” scale */
+/* Desktop: title + content */
 .intro-title {
     font-size: clamp(1.35rem, 2vw, 1.75rem);
     font-weight: bolder;
@@ -199,18 +198,11 @@ body {
     text-shadow: 0 0 8px rgba(34, 211, 238, 0.35);
 }
 
-.intro-subheader {
+.intro-content {
     font-size: clamp(1.16rem, 1.49vw, 1.41rem);
-    line-height: 1.38;
-    margin-bottom: 0.5rem;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
     color: rgba(230, 240, 255, 0.9);
-}
-
-.intro-body {
-    font-size: clamp(1.16rem, 1.49vw, 1.41rem);
-    line-height: 1.42;
-    margin-bottom: 0.95rem;
-    color: rgba(255, 255, 255, 0.78);
 }
 
 .choose-fate-copy {
@@ -366,13 +358,7 @@ body {
         margin-bottom: 0.22rem;
     }
 
-    .intro-subheader {
-        font-size: clamp(.9rem, 4.62vw, 1.05rem);
-        line-height: 1.18;
-        margin-bottom: 0.22rem;
-    }
-
-    .intro-body {
+    .intro-content {
         font-size: clamp(.9rem, 4.62vw, 1.05rem);
         line-height: 1.18;
         margin-bottom: 0.28rem;
@@ -386,13 +372,14 @@ body {
 
     #display-window {
         width: min(76.8vw, 300px);
-        height: 160px;
+        height: auto;
+        min-height: 120px;
         top: calc(44vh + var(--layout-shift-down));
         left: 50%;
         transform: translate(-50%, -50%);
-        padding: 0.35rem 0.25rem;
+        padding: 0.35rem 0.5rem;
         box-sizing: border-box;
-        overflow: hidden;
+        overflow: visible;
     }
 
     .fate-omen {
