@@ -353,7 +353,7 @@ body {
         width: 100%;
         padding: 0 0.75rem;
         top: 0.35rem;
-        max-height: 42vh;
+        max-height: 47vh;
         overflow: hidden;
         pointer-events: none;
     }
@@ -361,28 +361,26 @@ body {
     /* ~2× prior mobile intro scale */
     .intro-title {
         font-size: clamp(1.05rem, 4.8vw, 1.35rem);
-        line-height: 1.2;
-        margin-bottom: 0.7rem;
-        padding-bottom: 5rem;
+        line-height: 1.15;
+        margin-bottom: 0.22rem;
     }
 
     .intro-subheader {
-        font-size: clamp(.75rem, 4.5vw, .9rem);
-        line-height: 1.22;
-        margin-bottom: 0.45rem;
+        font-size: clamp(.9rem, 4.62vw, 1.05rem);
+        line-height: 1.18;
+        margin-bottom: 0.22rem;
     }
 
     .intro-body {
-        font-size: clamp(.75rem, 4.5vw, .9rem);
-        line-height: 1.2;
-        margin-bottom: 0.65rem;
-        padding-bottom: 0.5rem;
+        font-size: clamp(.9rem, 4.62vw, 1.05rem);
+        line-height: 1.18;
+        margin-bottom: 0.28rem;
     }
 
     .rule {
-        font-size: clamp(0.75rem, 4vw, 1rem);
-        line-height: 1.12;
-        margin-bottom: 0.18rem;
+        font-size: clamp(0.75rem, 3.02vw, 1rem);
+        line-height: 1.1;
+        margin-bottom: 0.14rem;
     }
 
     #display-window {
