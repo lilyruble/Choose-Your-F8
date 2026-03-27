@@ -83,13 +83,13 @@ body {
 }
 
 .dare-line {
-    font-family: "Press Start 2P", system-ui;
-    font-weight: 400;
-    font-size: 0.55rem;
+    font-size: 0.75rem;
+    font-weight: 300;
+    font-style: italic;
     color: #fff;
-    margin-top: 0.65rem;
+    margin-top: 0.5rem;
     max-width: min(74vw, 420px);
-    line-height: 1.7;
+    line-height: 1.35;
 }
 
 #display-window {
