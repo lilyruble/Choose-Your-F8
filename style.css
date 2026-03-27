@@ -5,13 +5,13 @@ body {
     height: 100%;
     height: 100dvh;
     max-height: 100dvh;
-    overflow: hidden;
-    overflow-x: hidden;
-    overflow-y: hidden;
+    overflow: none;
+    overflow-x: none;
+    overflow-y: none;
     overscroll-behavior: none;
     overscroll-behavior-x: none;
     overscroll-behavior-y: none;
-    -webkit-overflow-scrolling: auto;
+    -webkit-overflow-scrolling: none;
     background-color: #121212;
     color: #fff;
     touch-action: manipulation;
@@ -34,7 +34,7 @@ body {
     min-height: 0;
     width: 100%;
     max-width: 100vw;
-    overflow: hidden;
+    overflow: none;
     box-sizing: border-box;
     background: transparent;
 }
@@ -354,7 +354,7 @@ body {
         padding: 0 0.75rem;
         top: 0.35rem;
         max-height: 42vh;
-        overflow: hidden;
+        overflow: none;
         pointer-events: none;
     }
 
