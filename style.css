@@ -366,13 +366,13 @@ body {
     }
 
     .intro-subheader {
-        font-size: clamp(.9rem, 4.5vw, .9rem);
+        font-size: clamp(.75rem, 4.5vw, .9rem);
         line-height: 1.22;
         margin-bottom: 0.38rem;
     }
 
     .intro-body {
-        font-size: clamp(.9rem, 4.5vw, .9rem);
+        font-size: clamp(.75rem, 4.5vw, .9rem);
         line-height: 1.2;
         margin-bottom: 0.38rem;
     }
