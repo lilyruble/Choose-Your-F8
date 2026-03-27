@@ -459,6 +459,8 @@ body {
 
     html,
     body {
+        position: fixed;
+        width: 100%;
         overflow-x: hidden;
         overflow-y: hidden;
         overscroll-behavior-x: none;

@@ -250,3 +250,7 @@ applyMysticGlow(FALLBACK_THEME_COLOR);
 setupMobileKeyboardSpacing();
 initShakeTracking();
 setPromptOverlayVisibility();
+
+// Snap any accidental scroll back to origin — prevents Chrome/Safari
+// from showing a scroll indicator when dynamic content causes a transient reflow.
+window.addEventListener('scroll', () => window.scrollTo(0, 0), { passive: true });
