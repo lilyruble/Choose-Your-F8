@@ -362,7 +362,7 @@ body {
     .intro-title {
         font-size: clamp(1.05rem, 4.8vw, 1.35rem);
         line-height: 1.2;
-        margin-bottom: 0.4rem;
+        margin-bottom: 0.7rem;
     }
 
     .intro-subheader {
@@ -374,7 +374,7 @@ body {
     .intro-body {
         font-size: clamp(.75rem, 4.5vw, .9rem);
         line-height: 1.2;
-        margin-bottom: 0.45rem;
+        margin-bottom: 0.65rem;
     }
 
     .rule {
