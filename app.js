@@ -17,6 +17,8 @@ function setupMobileKeyboardSpacing() {
     if (!window.visualViewport) return;
 
     const syncKeyboardOffset = () => {
+        // Reset any scroll the browser may have introduced during layout reflow.
+        if (window.scrollX !== 0 || window.scrollY !== 0) window.scrollTo(0, 0);
         const viewportDiff = window.innerHeight - window.visualViewport.height;
         const isKeyboardOpen = viewportDiff > 120;
         const keyboardOffset = isKeyboardOpen ? `${Math.min(viewportDiff * 0.5, 180)}px` : '0px';

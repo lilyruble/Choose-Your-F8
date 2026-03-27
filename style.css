@@ -385,13 +385,13 @@ body {
 
     #display-window {
         width: min(76.8vw, 300px);
-        height: auto;
-        min-height: 110px;
+        height: 160px;
         top: calc(44vh + var(--layout-shift-down));
         left: 50%;
         transform: translate(-50%, -50%);
         padding: 0.35rem 0.25rem;
         box-sizing: border-box;
+        overflow: hidden;
     }
 
     .fate-omen {
