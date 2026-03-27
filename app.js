@@ -258,6 +258,9 @@ setupMobileKeyboardSpacing();
 initShakeTracking();
 setPromptOverlayVisibility();
 
-// Snap any accidental scroll back to origin — prevents Chrome/Safari
-// from showing a scroll indicator when dynamic content causes a transient reflow.
-window.addEventListener('scroll', () => window.scrollTo(0, 0), { passive: true });
+// Block all scroll gestures — touchmove covers mobile, wheel covers desktop trackpad/mouse.
+// Non-passive so preventDefault() is honoured by the browser.
+document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+document.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+// Snap back anything the browser may scroll programmatically (e.g. keyboard focus).
+window.addEventListener('scroll', () => window.scrollTo(0, 0));

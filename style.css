@@ -14,7 +14,7 @@ body {
     -webkit-overflow-scrolling: auto;
     background-color: #121212;
     color: #fff;
-    touch-action: manipulation;
+    touch-action: none;
 }
 
 :root {
@@ -459,8 +459,6 @@ body {
 
     html,
     body {
-        position: fixed;
-        width: 100%;
         overflow-x: hidden;
         overflow-y: hidden;
         overscroll-behavior-x: none;
