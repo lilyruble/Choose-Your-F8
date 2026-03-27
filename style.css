@@ -207,7 +207,10 @@ body {
 
 .choose-fate-copy {
     font-family: "IBM Plex Mono", monospace;
-    font-size: clamp(1rem, 1.2vw, 1.24rem);
+    font-size: clamp(1.1rem, 1.32vw, 1.364rem);
+    letter-spacing: (5rem);
+    font-weight: 700;
+    text-transform: uppercase;
     line-height: 1.2;
     color: rgba(255, 255, 255, 0.82);
     text-shadow: 0 0 8px rgba(34, 211, 238, 0.22);
@@ -432,7 +435,7 @@ body {
 
     .choose-fate-copy {
         margin-top: 0.38rem;
-        font-size: 0.62rem;
+        font-size: 0.68rem;
     }
 
     .shake-hint {
