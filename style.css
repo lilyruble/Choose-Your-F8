@@ -73,22 +73,23 @@ body {
 }
 
 .fate-omen {
-    font-size: 1.25rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    font-family: "Press Start 2P", system-ui;
+    font-weight: 400;
+    font-size: 0.85rem;
+    letter-spacing: 0.01em;
     color: #22d3ee;
     max-width: min(74vw, 420px);
-    line-height: 1.25;
+    line-height: 1.6;
 }
 
 .dare-line {
-    font-size: 0.75rem;
-    font-weight: 300;
-    font-style: italic;
+    font-family: "Press Start 2P", system-ui;
+    font-weight: 400;
+    font-size: 0.55rem;
     color: #fff;
-    margin-top: 0.5rem;
+    margin-top: 0.65rem;
     max-width: min(74vw, 420px);
-    line-height: 1.35;
+    line-height: 1.7;
 }
 
 #display-window {
@@ -428,7 +429,7 @@ body {
     }
 
     #destiny-input {
-        font-size: 0.9rem;
+        font-size: 1rem;
         line-height: 1.1;
         padding: 0.55rem 0;
     }
