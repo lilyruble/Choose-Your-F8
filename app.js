@@ -215,6 +215,8 @@ form.addEventListener('submit', async (event) => {
     oracleRequestInFlight = true;
     shakeHint.classList.remove('visible');
     triggerShakeAnimation();
+    input.blur();
+    requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, 0)));
     try {
         await askTheOracle(question);
         input.value = '';
@@ -241,6 +243,9 @@ input.addEventListener('input', () => {
 input.addEventListener('focus', async () => {
     await ensureMotionPermission();
     maybeShowShakeHint();
+    // Safari scrolls the window to bring the input into view when the keyboard opens.
+    // Two rAF frames lets that scroll complete before we reset it.
+    requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, 0)));
 });
 
 input.addEventListener('blur', () => {
