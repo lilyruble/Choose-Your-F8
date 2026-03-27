@@ -215,7 +215,6 @@ form.addEventListener('submit', async (event) => {
     oracleRequestInFlight = true;
     shakeHint.classList.remove('visible');
     triggerShakeAnimation();
-    input.blur();
     requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, 0)));
     try {
         await askTheOracle(question);

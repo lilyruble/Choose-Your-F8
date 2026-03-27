@@ -274,7 +274,7 @@ body {
 }
 
 .prompt-area {
-    position: absolute;
+    position: fixed;
     bottom: max(0.75rem,
             calc(4.3rem + 12vh - var(--layout-shift-down) + env(safe-area-inset-bottom) + var(--keyboard-offset)));
     left: 50%;
