@@ -362,8 +362,12 @@ body {
         max-height: min(80vh, 1140px);
     }
 
+    /* top: 56% tracks the ball's true vertical center (padding-top 33vh + padding-bottom 20vh).
+       height: auto + translate(-50%,-50%) keeps omen AND dare centered together on the ball face. */
     #display-window {
-        transform: translate(-50%, -42%);
+        top: 56%;
+        height: auto;
+        transform: translate(-50%, -50%);
         z-index: 40;
     }
 }
@@ -386,10 +390,11 @@ body {
         padding-bottom: 15rem;
     }
 
-    /* display window centered at 75vw */
+    /* display window centered at 75vw, vertically on ball face */
     #display-window {
         left: 75vw;
-        transform: translate(-50%, -42%);
+        top: 56%;
+        transform: translate(-50%, -50%);
     }
 
     /* prompt area centered at 75vw, width matches ball column */
