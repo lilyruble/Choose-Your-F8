@@ -13,30 +13,26 @@ const FALLBACK_THEME_COLOR = '#4a4d52';
 let motionPermissionRequested = false;
 let oracleRequestInFlight = false;
 
+// Exposed so the focus handler can re-sync after iOS keyboard animation settles
+let syncKeyboard = null;
+
 function setupMobileKeyboardSpacing() {
     if (!window.visualViewport) return;
     const form = document.getElementById('fate-form');
 
-    const syncKeyboardOffset = () => {
+    syncKeyboard = () => {
         if (window.scrollX !== 0 || window.scrollY !== 0) window.scrollTo(0, 0);
         const keyboardHeight = window.innerHeight - window.visualViewport.height;
         const isKeyboardOpen = keyboardHeight > 120;
         document.body.classList.toggle('keyboard-open', isKeyboardOpen);
-
-        if (isKeyboardOpen) {
-            // Pin form directly above keyboard using measured height — CSS variables
-            // are unreliable on iOS Safari so we set inline style instead.
-            if (form) form.style.bottom = (keyboardHeight + 12) + 'px';
-            document.documentElement.style.setProperty('--keyboard-offset', `${Math.min(keyboardHeight, 420)}px`);
-        } else {
-            if (form) form.style.bottom = '';
-            document.documentElement.style.setProperty('--keyboard-offset', '0px');
-        }
+        document.documentElement.style.setProperty('--keyboard-offset', isKeyboardOpen ? `${Math.min(keyboardHeight, 420)}px` : '0px');
+        // Inline bottom overrides CSS so the form pins just above the keyboard edge
+        if (form) form.style.bottom = isKeyboardOpen ? `${keyboardHeight + 12}px` : '';
     };
 
-    window.visualViewport.addEventListener('resize', syncKeyboardOffset);
-    window.visualViewport.addEventListener('scroll', syncKeyboardOffset);
-    syncKeyboardOffset();
+    window.visualViewport.addEventListener('resize', syncKeyboard);
+    window.visualViewport.addEventListener('scroll', syncKeyboard);
+    syncKeyboard();
 }
 
 function hexToRgbTriplet(hex) {
@@ -393,9 +389,9 @@ input.addEventListener('input', () => {
 input.addEventListener('focus', async () => {
     await ensureMotionPermission();
     maybeShowShakeHint();
-    // Safari scrolls the window to bring the input into view when the keyboard opens.
-    // Two rAF frames lets that scroll complete before we reset it.
     requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, 0)));
+    // iOS keyboard animation takes ~300ms; re-sync once it has fully settled
+    setTimeout(() => syncKeyboard && syncKeyboard(), 350);
 });
 
 input.addEventListener('blur', () => {

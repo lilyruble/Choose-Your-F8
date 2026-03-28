@@ -395,8 +395,9 @@ body {
         pointer-events: none;
     }
 
+    /* -10% font */
     .intro-title {
-        font-size: clamp(1.14rem, 2.5vw, 1.14rem);
+        font-size: clamp(1.03rem, 2.25vw, 1.03rem);
         line-height: 1.25;
         margin-top: 1.53rem;
         margin-left: 0.6rem;
@@ -448,10 +449,10 @@ body {
         max-width: min(76.8vw, 300px);
     }
 
-    /* ball lifted ~10% higher above input area */
+    /* ball moved down ~15%: more top padding, less bottom gap before input */
     .ball-stage {
-        padding-top: calc(14vh + var(--layout-shift-down));
-        padding-bottom: 10vh;
+        padding-top: calc(17vh + var(--layout-shift-down));
+        padding-bottom: 4vh;
     }
 
     #magic-8-ball {
