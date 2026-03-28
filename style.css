@@ -183,15 +183,14 @@ body {
     width: 100%;
     color: rgba(255, 255, 255, 0.88);
     font-family: "IBM Plex Mono", monospace;
-    /* widened from 42vw + 3rem padding so title lands on 2 lines */
-    max-width: min(48vw, 44rem);
+    max-width: min(52vw, 50rem);
     padding: 0.39rem 1rem;
     text-align: left;
 }
 
-/* Desktop: title + content */
+/* Desktop: ~2× larger for readability on smaller windows */
 .intro-title {
-    font-size: clamp(1.35rem, 2vw, 1.75rem);
+    font-size: clamp(2.0rem, 3vw, 2.8rem);
     font-weight: bolder;
     line-height: 1.3;
     margin-bottom: 0.84rem;
@@ -200,7 +199,7 @@ body {
 }
 
 .intro-content {
-    font-size: clamp(1.16rem, 1.49vw, 1.41rem);
+    font-size: clamp(1.7rem, 2.2vw, 2.1rem);
     line-height: 1.4;
     margin-bottom: 1.4rem;
     color: rgba(230, 240, 255, 0.9);
@@ -225,7 +224,7 @@ body {
 }
 
 .rule {
-    font-size: clamp(0.89rem, 1.09vw, 1.13rem);
+    font-size: clamp(1.3rem, 1.6vw, 1.7rem);
     line-height: 1.35;
     margin-bottom: 1rem;
     opacity: 0;
@@ -345,6 +344,7 @@ body {
 
 /* Large desktop: ball + form column centered at 63vw (shifted left ~20%), ball ~1/3+ window */
 @media (min-width: 1150px) {
+
     /* padding-right positions ball center at 63vw: 100 - 17 - 20 = 63 */
     .ball-stage {
         justify-content: flex-end;
@@ -385,6 +385,7 @@ body {
 }
 
 @media (max-width: 768px) {
+
     /* near-zero padding lets title span full phone width */
     .ritual-intro {
         max-width: 100%;
@@ -396,14 +397,13 @@ body {
         pointer-events: none;
     }
 
-    /* 0.95rem + no side margins → "...predicted the future." on line 1,
-       "This one helps you create it." clean on line 2, no orphan "it." */
+    /* aligned left with content/rules; font keeps 2-line target */
     .intro-title {
         font-size: clamp(0.95rem, 2.1vw, 0.95rem);
         line-height: 1.25;
         margin-top: 1.53rem;
-        margin-left: 0;
-        margin-right: 0;
+        margin-left: 0.6rem;
+        margin-right: 0.6rem;
         margin-bottom: 0.9rem;
     }
 
@@ -427,12 +427,12 @@ body {
         margin-bottom: 0.12rem;
     }
 
-    /* overlay ON TOP of ball so omen is always readable */
+    /* overlay ON TOP of ball; top adjusted to follow ball moving up */
     #display-window {
         width: min(76.8vw, 300px);
         height: auto;
         min-height: 120px;
-        top: calc(44vh + var(--layout-shift-down));
+        top: calc(39vh + var(--layout-shift-down));
         left: 50%;
         transform: translate(-50%, -50%);
         padding: 0.35rem 0.5rem;
@@ -450,15 +450,16 @@ body {
         max-width: min(76.8vw, 300px);
     }
 
-    /* ball moved down ~15%: more top padding, less bottom gap before input */
+    /* ball moved up ~10% of its height; bottom padding keeps clear of input */
     .ball-stage {
         padding-top: calc(17vh + var(--layout-shift-down));
-        padding-bottom: 4vh;
+        padding-bottom: 15vh;
     }
 
+    /* ball +10% */
     #magic-8-ball {
         height: 65%;
-        max-height: min(55vh, 634px);
+        max-height: min(60.5vh, 697px);
     }
 
     .input-row {

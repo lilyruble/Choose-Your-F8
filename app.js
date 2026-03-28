@@ -56,9 +56,10 @@ function applyMysticGlow(newColor) {
 
 function inferThemeColorFromQuestion(question) {
     const q = question.toLowerCase();
+    // Romance checked first — "ask out", "text them", "dm" etc. must not fall into career
+    if (/(ask.*out|text.*him|text.*her|dm.*them|ask.*on a date|love|date|relationship|romance|partner|ex|crush|social|friend|feelings for)/.test(q)) return '#EA4335';
     if (/(career|job|work|promotion|business|interview|salary|startup)/.test(q)) return '#4285F4';
     if (/(create|creative|innovation|build|art|idea|learn|study|design)/.test(q)) return '#FBBC04';
-    if (/(love|date|relationship|romance|partner|ex|crush|social|friend)/.test(q)) return '#EA4335';
     if (/(personal|habit|confidence|growth|fear|wellness|mindset)/.test(q)) return '#34A853';
     return FALLBACK_THEME_COLOR;
 }
@@ -320,6 +321,7 @@ Rules:
 - Innovation/Creativity => themeColor="#FBBC04"
 - Social/Romance => themeColor="#EA4335"
 - Personal Growth => themeColor="#34A853"
+- Any question about asking someone out, texting a crush, pursuing feelings, dating, or romantic interest of ANY kind: ALWAYS Social/Romance (#EA4335), regardless of the person's name or profession.
 3) If user asks passive "Will I..." reframe omen toward agency and ownership.
 4) omen: 8 words or fewer, cryptic, echoes the chosen Spirit omen in tone and weight — matched to the stakes of their question.
 5) dare: directly name the specific thing they mentioned (the person, job, city, decision, fear). Give one concrete action they can do today — not generic advice, but a precise move tied to their exact situation.
