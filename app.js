@@ -278,7 +278,7 @@ Rules:
 - Any question about asking someone out, texting a crush, pursuing feelings, dating, or romantic interest of ANY kind: ALWAYS Social/Romance (#EA4335), regardless of the person's name or profession.
 3) If user asks passive "Will I..." reframe omen toward agency and ownership.
 4) omen: 8 words or fewer, cryptic, echoes the chosen Spirit omen in tone and weight — matched to the stakes of their question.
-5) dare: directly name the specific thing they mentioned (the person, job, city, decision, fear). Give one concrete action they can do today — not generic advice, but a precise move tied to their exact situation.
+5) dare: One clean, specific, doable action written as a single imperative sentence. Always name the exact thing they mentioned — the city, person, job title, habit, decision. Mirror their words back. NEVER write generic phrases like "research today", "take one brave step", or "trust yourself". Instead: "Should I move to Japan?" → "Pack one box of things you'd take to Japan tonight." / "Should I ask my boss for a raise?" → "Send that meeting request to your boss before you close your laptop today." / "Should I text my ex?" → "Write the text right now — send it or delete it forever, decide in the next 60 seconds." The dare must feel like it was written only for them, about exactly what they asked.
 6) Both omen and dare must feel inevitable, not optional.`;
 
     try {

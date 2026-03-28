@@ -364,6 +364,7 @@ body {
 
     #display-window {
         transform: translate(-50%, -42%);
+        z-index: 40;
     }
 }
 
