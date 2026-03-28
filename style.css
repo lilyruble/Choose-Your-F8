@@ -48,7 +48,7 @@ body {
     z-index: 0;
     pointer-events: none;
     transition: background 2s ease-in-out;
-    background: radial-gradient(ellipse 156% 120% at 50% 63%,
+    background: radial-gradient(ellipse 203% 156% at 50% 63%,
             rgba(120, 122, 128, 0.22) 0%,
             rgba(var(--theme-glow-rgb), 0.42) 12%,
             rgba(var(--theme-glow-rgb), 0.22) 32%,
@@ -330,6 +330,29 @@ body {
     .rule {
         font-size: clamp(1.3rem, 1.5vw, 1.6rem);
     }
+
+    /* ball + form + choose-fate-copy shifted ~20% right of center */
+    .ball-stage {
+        justify-content: flex-end;
+        padding-right: 10vw;
+    }
+
+    #display-window {
+        left: 70vw;
+    }
+
+    .prompt-area {
+        left: 70vw;
+    }
+
+    .mystic-background {
+        background: radial-gradient(ellipse 203% 156% at 70% 58%,
+                rgba(120, 122, 128, 0.22) 0%,
+                rgba(var(--theme-glow-rgb), 0.42) 12%,
+                rgba(var(--theme-glow-rgb), 0.22) 32%,
+                rgba(28, 30, 34, 0.88) 62%,
+                rgba(10, 10, 12, 0.98) 100%);
+    }
 }
 
 /* Min desktop: ball fills ~40% vertical, centered */
@@ -344,13 +367,13 @@ body {
     }
 }
 
-/* Large desktop: ball + form column centered at 63vw (shifted left ~20%), ball ~1/3+ window */
+/* Large desktop: ball + form column centered at 75vw (~20% right of prior 63vw position) */
 @media (min-width: 1150px) {
 
-    /* padding-right positions ball center at 63vw: 100 - 17 - 20 = 63 */
+    /* padding-right positions ball center at 75vw: 100 - 5 - 20 = 75 */
     .ball-stage {
         justify-content: flex-end;
-        padding-right: 17vw;
+        padding-right: 5vw;
     }
 
     /* ball +20% larger: 33vw → 40vw, max-height +20% */
@@ -362,22 +385,22 @@ body {
         padding-bottom: 15rem;
     }
 
-    /* display window centered at 63vw */
+    /* display window centered at 75vw */
     #display-window {
-        left: 63vw;
+        left: 75vw;
         transform: translate(-50%, -42%);
     }
 
-    /* prompt area centered at 63vw, width matches ball column */
+    /* prompt area centered at 75vw, width matches ball column */
     .prompt-area {
-        left: 63vw;
+        left: 75vw;
         width: min(40vw, 648px);
         bottom: max(2rem, calc(2.5rem + env(safe-area-inset-bottom)));
     }
 
-    /* gradient origin at 63%, ellipse +20% larger */
+    /* gradient origin at 75%, ellipse +20% larger */
     .mystic-background {
-        background: radial-gradient(ellipse 108% 158% at 63% 58%,
+        background: radial-gradient(ellipse 108% 158% at 75% 58%,
                 rgba(120, 122, 128, 0.22) 0%,
                 rgba(var(--theme-glow-rgb), 0.42) 12%,
                 rgba(var(--theme-glow-rgb), 0.22) 32%,
@@ -452,15 +475,15 @@ body {
         max-width: min(76.8vw, 300px);
     }
 
-    /* ball +15%; bottom padding keeps it clear of input */
+    /* ball +30% more; bottom padding keeps it clear of input */
     .ball-stage {
         padding-top: calc(17vh + var(--layout-shift-down));
         padding-bottom: 15vh;
     }
 
     #magic-8-ball {
-        height: 65%;
-        max-height: min(69.5vh, 800px);
+        height: 85%;
+        max-height: min(90vh, 1040px);
     }
 
     .input-row {
