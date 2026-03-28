@@ -220,7 +220,7 @@ body {
     max-width: 42rem;
     font-size: clamp(1.32rem, 1.58vw, 1.64rem);
     line-height: 1.4;
-    margin: 0 auto;
+    margin: 0;
 }
 
 .rule {
@@ -319,9 +319,17 @@ body {
 
 /* Small desktop window (769–1149px): ~2× font sizes for legibility when minimized */
 @media (min-width: 769px) and (max-width: 1149px) {
-    .intro-title   { font-size: clamp(2.0rem, 2.5vw, 2.5rem); }
-    .intro-content { font-size: clamp(1.7rem, 2.0vw, 2.0rem); }
-    .rule          { font-size: clamp(1.3rem, 1.5vw, 1.6rem); }
+    .intro-title {
+        font-size: clamp(2.0rem, 2.5vw, 2.5rem);
+    }
+
+    .intro-content {
+        font-size: clamp(1.7rem, 2.0vw, 2.0rem);
+    }
+
+    .rule {
+        font-size: clamp(1.3rem, 1.5vw, 1.6rem);
+    }
 }
 
 /* Min desktop: ball fills ~40% vertical, centered */
@@ -492,6 +500,10 @@ body {
         white-space: nowrap;
     }
 
+    .shake-hint {
+        font-size: 0.48rem;
+        margin-top: 0.35rem;
+    }
 
     /* button ~10% wider horizontally */
     .ask-submit {
