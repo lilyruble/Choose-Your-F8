@@ -15,16 +15,23 @@ let oracleRequestInFlight = false;
 
 function setupMobileKeyboardSpacing() {
     if (!window.visualViewport) return;
+    const form = document.getElementById('fate-form');
 
     const syncKeyboardOffset = () => {
-        // Reset any scroll the browser may have introduced during layout reflow.
         if (window.scrollX !== 0 || window.scrollY !== 0) window.scrollTo(0, 0);
-        const viewportDiff = window.innerHeight - window.visualViewport.height;
-        const isKeyboardOpen = viewportDiff > 120;
-        // Use full viewportDiff so prompt-area clears the keyboard entirely
-        const keyboardOffset = isKeyboardOpen ? `${Math.min(viewportDiff, 420)}px` : '0px';
-        document.documentElement.style.setProperty('--keyboard-offset', keyboardOffset);
+        const keyboardHeight = window.innerHeight - window.visualViewport.height;
+        const isKeyboardOpen = keyboardHeight > 120;
         document.body.classList.toggle('keyboard-open', isKeyboardOpen);
+
+        if (isKeyboardOpen) {
+            // Pin form directly above keyboard using measured height — CSS variables
+            // are unreliable on iOS Safari so we set inline style instead.
+            if (form) form.style.bottom = (keyboardHeight + 12) + 'px';
+            document.documentElement.style.setProperty('--keyboard-offset', `${Math.min(keyboardHeight, 420)}px`);
+        } else {
+            if (form) form.style.bottom = '';
+            document.documentElement.style.setProperty('--keyboard-offset', '0px');
+        }
     };
 
     window.visualViewport.addEventListener('resize', syncKeyboardOffset);
