@@ -3,14 +3,12 @@ const fateOutput = document.getElementById('fate-output');
 const dareOutput = document.getElementById('dare-output');
 const form = document.getElementById('fate-form');
 const promptOverlay = document.getElementById('prompt-overlay');
-const shakeHint = document.getElementById('shake-hint');
 const modelViewer = document.getElementById('magic-8-ball');
 const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === ''
     ? 'http://localhost:8080'
     : 'https://lucky8-fate-api-588925072046.us-central1.run.app';
 /* Default ominous chrome-grey center; category colors override after first ask. */
 const FALLBACK_THEME_COLOR = '#4a4d52';
-let motionPermissionRequested = false;
 let oracleRequestInFlight = false;
 
 // Exposed so the focus handler can re-sync after iOS keyboard animation settles
@@ -122,50 +120,6 @@ function triggerShakeAnimation() {
     gsap.fromTo(modelViewer, { x: -6 }, { x: 6, duration: 0.07, yoyo: true, repeat: 5, ease: 'power1.inOut' });
 }
 
-function maybeShowShakeHint() {
-    const shouldShow = input.value.trim().length > 5 && document.activeElement === input;
-    shakeHint.classList.toggle('visible', shouldShow);
-}
-
-function initShakeTracking() {
-    let lastX = 0;
-    let lastY = 0;
-    let lastZ = 0;
-    const threshold = 15;
-
-    window.addEventListener('devicemotion', (event) => {
-        const acc = event.accelerationIncludingGravity;
-        if (!acc || typeof acc.x !== 'number') return;
-
-        const deltaX = Math.abs(lastX - acc.x);
-        const deltaY = Math.abs(lastY - acc.y);
-        const typedEnough = input.value.trim().length > 5;
-
-        if ((deltaX + deltaY) > threshold && typedEnough) {
-            triggerShakeAnimation();
-            form.requestSubmit();
-        }
-
-        lastX = acc.x;
-        lastY = acc.y;
-        lastZ = acc.z;
-    });
-}
-
-async function ensureMotionPermission() {
-    if (motionPermissionRequested) return;
-    motionPermissionRequested = true;
-
-    const needsPermission = typeof DeviceMotionEvent !== 'undefined'
-        && typeof DeviceMotionEvent.requestPermission === 'function';
-    if (!needsPermission) return;
-
-    try {
-        await DeviceMotionEvent.requestPermission();
-    } catch (err) {
-        // Ignore permission denial.
-    }
-}
 
 async function askTheOracle(question) {
     const SYSTEM_PROMPT = `You are "Lucky 8 Fate," a digital Oracle for bold risk-takers.
@@ -362,7 +316,6 @@ form.addEventListener('submit', async (event) => {
     const question = input.value.trim();
     if (!question || oracleRequestInFlight) return;
     oracleRequestInFlight = true;
-    shakeHint.classList.remove('visible');
     triggerShakeAnimation();
     requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, 0)));
     try {
@@ -385,25 +338,20 @@ input.addEventListener('keydown', (e) => {
 
 input.addEventListener('input', () => {
     setPromptOverlayVisibility();
-    maybeShowShakeHint();
 });
 
-input.addEventListener('focus', async () => {
-    await ensureMotionPermission();
-    maybeShowShakeHint();
+input.addEventListener('focus', () => {
     requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, 0)));
     // iOS keyboard animation takes ~300ms; re-sync once it has fully settled
     setTimeout(() => syncKeyboard && syncKeyboard(), 350);
 });
 
 input.addEventListener('blur', () => {
-    shakeHint.classList.remove('visible');
     setPromptOverlayVisibility();
 });
 
 applyMysticGlow(FALLBACK_THEME_COLOR);
 setupMobileKeyboardSpacing();
-initShakeTracking();
 setPromptOverlayVisibility();
 
 // Block all scroll gestures — touchmove covers mobile, wheel covers desktop trackpad/mouse.
