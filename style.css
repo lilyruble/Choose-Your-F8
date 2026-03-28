@@ -365,7 +365,7 @@ body {
     /* top: 48% centers omen+dare on the ball's rendered face (3D model renders slightly above geometric center).
        height: auto + translate(-50%,-50%) keeps both texts contained together on the ball face. */
     #display-window {
-        top: 48%;
+        top: 35%;
         height: auto;
         transform: translate(-50%, -50%);
         z-index: 40;
@@ -393,7 +393,7 @@ body {
     /* display window centered at 75vw, vertically on ball face */
     #display-window {
         left: 75vw;
-        top: 48%;
+        top: 35%;
         transform: translate(-50%, -50%);
     }
 
