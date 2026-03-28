@@ -278,8 +278,13 @@ Rules:
 - Any question about asking someone out, texting a crush, pursuing feelings, dating, or romantic interest of ANY kind: ALWAYS Social/Romance (#EA4335), regardless of the person's name or profession.
 3) If user asks passive "Will I..." reframe omen toward agency and ownership.
 4) omen: 8 words or fewer, cryptic, echoes the chosen Spirit omen in tone and weight — matched to the stakes of their question.
-5) dare: One clean, specific, doable action written as a single imperative sentence. Always name the exact thing they mentioned — the city, person, job title, habit, decision. Mirror their words back. NEVER write generic phrases like "research today", "take one brave step", or "trust yourself". Instead: "Should I move to Japan?" → "Pack one box of things you'd take to Japan tonight." / "Should I ask my boss for a raise?" → "Send that meeting request to your boss before you close your laptop today." / "Should I text my ex?" → "Write the text right now — send it or delete it forever, decide in the next 60 seconds." The dare must feel like it was written only for them, about exactly what they asked.
-6) Both omen and dare must feel inevitable, not optional.`;
+5) dare: One clean, specific, imperative sentence tied EXACTLY to what they asked — always name the specific thing (city, person, job title, habit, decision). Calibrate the dare's boldness to the risk level of their question:
+- LOW stakes (gym, small habit, minor social): gentle push, easy today. "Go tonight — the version of you that goes is the one you want to be."
+- LOW-MEDIUM (a new project, reaching out, trying something new): a committed first step. "Send the first message to [specific person/thing] before you go to sleep tonight."
+- MEDIUM (career move, creative risk, lifestyle change): a visible, real-intent action. "Block two hours on your calendar this week and do the one thing you've been delaying."
+- MED-HIGH (quitting a job, ending a relationship, starting something scary): bold, momentum-creating, makes it real. "Tell one person you trust about [the specific thing] out loud today — saying it makes it real."
+- HIGH (moving countries, going all-in on a dream, a life-defining leap): full-send, urgent, dramatic. "Open your laptop right now and do the one irreversible thing — send it, book it, submit it. Don't close the tab until it's done."
+NEVER write generic phrases like "research today", "take one brave step", or "trust yourself". The dare must feel written only for their exact situation and push them one meaningful step further than they're comfortable with.`;
 
     try {
         gsap.to([fateOutput, dareOutput], { opacity: 0, duration: 0.2 });
