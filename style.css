@@ -183,8 +183,9 @@ body {
     width: 100%;
     color: rgba(255, 255, 255, 0.88);
     font-family: "IBM Plex Mono", monospace;
-    max-width: min(42vw, 44rem);
-    padding: 0.39rem 3rem;
+    /* widened from 42vw + 3rem padding so title lands on 2 lines */
+    max-width: min(48vw, 44rem);
+    padding: 0.39rem 1rem;
     text-align: left;
 }
 
@@ -384,28 +385,28 @@ body {
 }
 
 @media (max-width: 768px) {
-    /* minimal horizontal padding so text spans full width, fewer wrapped lines */
+    /* near-zero padding lets title span full phone width */
     .ritual-intro {
         max-width: 100%;
         width: 100%;
-        padding: 0.16rem 0.6rem;
+        padding: 0.16rem 0.2rem;
         top: 0.35rem;
         max-height: 54vh;
         overflow: hidden;
         pointer-events: none;
     }
 
-    /* -10% font */
+    /* 0.95rem + no side margins → "...predicted the future." on line 1,
+       "This one helps you create it." clean on line 2, no orphan "it." */
     .intro-title {
-        font-size: clamp(1.03rem, 2.25vw, 1.03rem);
+        font-size: clamp(0.95rem, 2.1vw, 0.95rem);
         line-height: 1.25;
         margin-top: 1.53rem;
-        margin-left: 0.6rem;
-        margin-right: 0.6rem;
+        margin-left: 0;
+        margin-right: 0;
         margin-bottom: 0.9rem;
     }
 
-    /* font -10% more to save vertical space; tight horizontal margins */
     .intro-content {
         font-size: clamp(0.68rem, 1.75vw, 0.68rem);
         line-height: 1.3;
@@ -416,9 +417,9 @@ body {
         padding-bottom: 0.5rem;
     }
 
-    /* wide margins removed so rules stretch horizontally, not vertically */
+    /* rules font -10% (mobile only) */
     .rule {
-        font-size: clamp(0.76rem, 1.615vw, 1.14rem);
+        font-size: clamp(0.68rem, 1.45vw, 1.03rem);
         line-height: 1.35;
         margin-top: 0.4rem;
         margin-left: 0.6rem;
