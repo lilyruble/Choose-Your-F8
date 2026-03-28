@@ -21,7 +21,8 @@ function setupMobileKeyboardSpacing() {
         if (window.scrollX !== 0 || window.scrollY !== 0) window.scrollTo(0, 0);
         const viewportDiff = window.innerHeight - window.visualViewport.height;
         const isKeyboardOpen = viewportDiff > 120;
-        const keyboardOffset = isKeyboardOpen ? `${Math.min(viewportDiff * 0.5, 180)}px` : '0px';
+        // Use full viewportDiff so prompt-area clears the keyboard entirely
+        const keyboardOffset = isKeyboardOpen ? `${Math.min(viewportDiff, 420)}px` : '0px';
         document.documentElement.style.setProperty('--keyboard-offset', keyboardOffset);
         document.body.classList.toggle('keyboard-open', isKeyboardOpen);
     };
