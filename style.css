@@ -241,8 +241,6 @@ body {
 
 .rule-3 {
     animation-delay: 2.5s;
-    color: #fff;
-    font-style: italic;
 }
 
 @keyframes reveal {
@@ -344,45 +342,44 @@ body {
     }
 }
 
-/* Large desktop: ball + form occupy right 40% column, no text overlap */
+/* Large desktop: ball + form column centered at 63vw (shifted left ~20%), ball ~1/3+ window */
 @media (min-width: 1150px) {
+    /* padding-right positions ball center at 63vw: 100 - 17 - 20 = 63 */
     .ball-stage {
         justify-content: flex-end;
-        padding-right: 15vw;
+        padding-right: 17vw;
     }
 
+    /* ball +20% larger: 33vw → 40vw, max-height +20% */
     #magic-8-ball {
         height: 180%;
-        max-height: min(78vh, 980px);
-        width: 38vw;
-        max-width: 640px;
+        max-height: min(94vh, 1176px);
+        width: 40vw;
+        max-width: 648px;
         padding-bottom: 15rem;
     }
 
+    /* display window centered at 63vw */
     #display-window {
-        justify-content: flex-end;
-        padding-right: 20vw;
-        left: 80vw;
+        left: 63vw;
         transform: translate(-50%, -42%);
     }
 
+    /* prompt area centered at 63vw, width matches ball column */
     .prompt-area {
-        left: 80vw;
-        justify-content: flex-end;
-        padding-right: 10vw;
-        width: min(36vw, 600px);
+        left: 63vw;
+        width: min(40vw, 648px);
         bottom: max(2rem, calc(2.5rem + env(safe-area-inset-bottom)));
     }
 
+    /* gradient origin at 63%, ellipse +20% larger */
     .mystic-background {
-        background: radial-gradient(ellipse 90% 132% at 80% 58%,
+        background: radial-gradient(ellipse 108% 158% at 63% 58%,
                 rgba(120, 122, 128, 0.22) 0%,
                 rgba(var(--theme-glow-rgb), 0.42) 12%,
                 rgba(var(--theme-glow-rgb), 0.22) 32%,
                 rgba(28, 30, 34, 0.88) 62%,
                 rgba(10, 10, 12, 0.98) 100%);
-        justify-content: flex-end;
-        padding-right: 15vw;
     }
 }
 
@@ -397,9 +394,9 @@ body {
         pointer-events: none;
     }
 
-    /* ~2× prior mobile intro scale */
+    /* ~2× prior mobile intro scale; title shrunk 20% */
     .intro-title {
-        font-size: clamp(1.5rem, 3.3vw, 1.5rem);
+        font-size: clamp(1.2rem, 2.64vw, 1.2rem);
         line-height: 1.25;
         margin-top: 1.7rem;
         margin-left: 1.2rem;
@@ -407,29 +404,27 @@ body {
         margin-bottom: 1rem;
     }
 
+    /* gap to rules cut ~50% */
     .intro-content {
         font-size: clamp(0.8rem, 2vw, 00.8rem);
         line-height: 1.3;
         margin-top: 1.2rem;
         margin-left: 1.2rem;
         margin-right: 1.5rem;
-        margin-bottom: 1rem;
-        padding-bottom: 1.3rem;
+        margin-bottom: 0.5rem;
+        padding-bottom: 0.65rem;
     }
 
+    /* leading between rules halved; unitless line-height prevents clamp overlap */
     .rule {
         font-size: clamp(0.8rem, 1.7vw, 1.2rem);
-        line-height: 1.3rem;
-        margin-top: 1.2rem;
+        line-height: 1.35;
+        margin-top: 0.5rem;
         margin-left: 1.2rem;
         margin-right: 1.5rem;
-        margin-bottom: 0.27rem;
+        margin-bottom: 0.13rem;
     }
 
-    .rule-1 {
-        margin-bottom: 0.1rem;
-        line-height: 0.1rem;
-    }
 
     #display-window {
         width: min(76.8vw, 300px);
@@ -452,9 +447,10 @@ body {
         max-width: min(76.8vw, 300px);
     }
 
+    /* ball lifted ~10% higher above input area */
     .ball-stage {
         padding-top: calc(14vh + var(--layout-shift-down));
-        padding-bottom: 4vh;
+        padding-bottom: 10vh;
     }
 
     #magic-8-ball {
@@ -476,10 +472,11 @@ body {
         padding-right: 0;
     }
 
+    /* input ~10% smaller */
     #destiny-input {
-        font-size: 1.2rem;
+        font-size: 1.08rem;
         line-height: 1.1;
-        padding: 0.66rem 0;
+        padding: 0.6rem 0;
     }
 
     .prompt-overlay {
@@ -491,9 +488,11 @@ body {
         padding-right: 0.1rem;
     }
 
+    /* sized to guarantee single line within 76.8vw container */
     .choose-fate-copy {
         margin-top: 0.4rem;
-        font-size: 1.3rem;
+        font-size: 1.0rem;
+        white-space: nowrap;
     }
 
     .shake-hint {
@@ -501,9 +500,10 @@ body {
         margin-top: 0.35rem;
     }
 
+    /* button ~10% wider horizontally */
     .ask-submit {
         font-size: 0.74rem;
-        padding: 0.46rem 0.66rem;
+        padding: 0.46rem 0.73rem;
     }
 
     html,
