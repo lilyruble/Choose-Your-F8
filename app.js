@@ -83,23 +83,37 @@ function parseFatePayload(data, question) {
         };
     }
 
-    try {
-        const parsed = JSON.parse(rawText);
-        if (parsed && (parsed.omen || parsed.fate) && parsed.dare) {
-            return {
-                omen: String(parsed.omen || parsed.fate).trim(),
-                dare: String(parsed.dare).trim(),
-                category: String(parsed.category || 'Unknown').trim(),
-                themeColor: parsed.themeColor || inferThemeColorFromQuestion(question)
-            };
+    // Gemini sometimes wraps its JSON reply in markdown code fences (```json ... ```)
+    // or adds stray text around it. Try the raw text, then a fence-stripped version,
+    // then just the {...} substring, before giving up on JSON entirely.
+    const stripFences = (str) => str.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+    const braceMatch = rawText.match(/\{[\s\S]*\}/);
+    const candidates = [rawText, stripFences(rawText)];
+    if (braceMatch) candidates.push(braceMatch[0]);
+
+    for (const candidate of candidates) {
+        try {
+            const parsed = JSON.parse(candidate);
+            if (parsed && (parsed.omen || parsed.fate) && parsed.dare) {
+                return {
+                    omen: String(parsed.omen || parsed.fate).trim(),
+                    dare: String(parsed.dare).trim(),
+                    category: String(parsed.category || 'Unknown').trim(),
+                    themeColor: parsed.themeColor || inferThemeColorFromQuestion(question)
+                };
+            }
+        } catch (err) {
+            // try the next candidate
         }
-    } catch (err) {
-        // Fallback to tagged text parsing.
     }
 
     const [fatePart, darePart] = rawText.split('[DARE]:');
-    const omen = fatePart.replace('[FATE]:', '').replace('[OMEN]:', '').trim();
+    let omen = fatePart.replace('[FATE]:', '').replace('[OMEN]:', '').trim();
     const dare = darePart ? darePart.trim() : 'Trust your instinct.';
+    // Last-resort guard: never surface raw JSON/model scaffolding on the ball.
+    if (/[{}]/.test(omen) || (omen.includes('":') && omen.length > 80)) {
+        omen = 'Signals are unclear.';
+    }
     return {
         omen: omen || 'Signals are unclear.',
         dare,
