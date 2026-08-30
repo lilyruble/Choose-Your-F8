@@ -318,7 +318,7 @@ NEVER write generic phrases like "research today", "take one brave step", or "tr
         const payload = parseFatePayload(data, question);
         applyMysticGlow(payload.themeColor);
         fateOutput.innerText = payload.omen;
-        dareOutput.innerText = `PUSH: ${payload.dare}`;
+        dareOutput.innerText = payload.dare;
 
         gsap.to([fateOutput, dareOutput], { opacity: 1, duration: 1, delay: 0.5 });
 
